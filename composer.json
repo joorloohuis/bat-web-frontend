@@ -1,0 +1,35 @@
+{
+    "name": "binary-analysis-tool/web-frontend",
+    "description": "Binary Analysis Tool user interfaces",
+    "keywords": ["binary analysis tool", "user interface"],
+    "homepage": "http://www.binaryanalysis.org/",
+    "type": "project",
+    "license": "Apache-2.0",
+    "support": {
+        "issues": "https://github.com/",
+        "wiki": "https://github.com/",
+        "source": "https://github.com/"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-bootstrap": "~2.0",
+        "yiisoft/yii2-swiftmailer": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "*",
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+        "yiisoft/yii2-faker": "*"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+    }
+}
