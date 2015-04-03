@@ -15,7 +15,8 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "*",
         "yiisoft/yii2-bootstrap": "~2.0",
-        "yiisoft/yii2-swiftmailer": "*"
+        "yiisoft/yii2-swiftmailer": "*",
+        "bower-asset/admin-lte": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
