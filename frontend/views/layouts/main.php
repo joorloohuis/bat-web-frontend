@@ -10,65 +10,154 @@ use frontend\widgets\Alert;
 /* @var $content string */
 
 AppAsset::register($this);
+// minor overrides to the design
+$this->registerCss("
+.navbar-nav>.user-menu>.dropdown-menu>li.user-header {
+    height: auto;
+}
+");
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body class="skin-red">
     <?php $this->beginBody() ?>
-    <div class="wrap">
-        <?php
-            NavBar::begin([
-                'brandLabel' => 'My Company',
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
-                ],
-            ]);
-            $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'About', 'url' => ['/site/about']],
-                ['label' => 'Contact', 'url' => ['/site/contact']],
-            ];
+    <div class="wrapper">
+      <header class="main-header">
+
+        <a href="/" class="logo">Binary Analysis Tool</a>
+
+        <nav class="navbar navbar-static-top" role="navigation">
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+
+              <li class="dropdown user user-menu">
+                <?php
+                if (!Yii::$app->user->isGuest) {
+                ?>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <span class="glyphicon glyphicon-user"></span>
+                  <span><?= Yii::$app->user->identity->username ?></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="user-header">
+                    <p><?= Yii::$app->user->identity->username ?> - <?= Yii::$app->user->identity->email ?></p>
+                  </li>
+                  <li class="user-footer">
+                    <?php
+                    echo Nav::widget([
+                        'items' => [
+                            [
+                                'label' => 'Profile',
+                                'url' => ['#'],
+                                'options' => [
+                                    'class' => 'pull-left'
+                                ],
+                                'linkOptions' => [
+                                    'class' => 'btn btn-default btn-flat'
+                                ],
+                            ],
+                            [
+                                'label' => 'Log out',
+                                'url' => ['/site/logout'],
+                                'options' => [
+                                    'class' => 'pull-right'
+                                ],
+                                'linkOptions' => [
+                                    'data-method' => 'post',
+                                    'class' => 'btn btn-default btn-flat'
+                                ],
+                            ],
+                        ]
+                    ]);
+                    ?>
+                  </li>
+                </ul>
+                <?php
+                }
+                ?>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <aside class="main-sidebar">
+        <section class="sidebar">
+          <ul class="sidebar-menu">
+            <?php
             if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-            } else {
-                $menuItems[] = [
-                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
+                $items = [
+                    [
+                        'label' => 'Sign up',
+                        'url' => ['/site/signup']
+                    ],
+                    [
+                        'label' => 'Log in',
+                        'url' => ['/site/login']
+                    ]
                 ];
             }
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => $menuItems,
+            else {
+                $items = [
+                    [
+                        'label' => 'Jobs'
+                    ]
+                ];
+            }
+            $items = array_merge($items, [ // always visible
+                [
+                    'label' => 'About',
+                    'url' => ['/site/about']
+                ],
+                [
+                    'label' => 'Contact',
+                    'url' => ['/site/contact']
+                ],
             ]);
-            NavBar::end();
-        ?>
+            echo Nav::widget(['items' => $items]);
+            ?>
+          </ul>
+        </section>
+      </aside>
 
-        <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-        </div>
-    </div>
+      <div class="content-wrapper">
+        <section class="content-header">
+          <h1><?= Html::encode($this->title) ?></h1>
+          <?= Breadcrumbs::widget([
+                'tag' => 'ol',
+                'homeLink' => [
+                    'label' => ' Dashboard',
+                    'url' => '/',
+                    'template' => "<li><i>{link}</i></li>\n",
+                    'class' => 'fa fa-dashboard',
+                ],
+                'itemTemplate' => "<li><i>{link}</i></li>\n",
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]);
+          ?>
+        </section>
 
-    <footer class="footer">
-        <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-        <p class="pull-right"><?= Yii::powered() ?></p>
-        </div>
-    </footer>
+        <section class="content">
+          <?= Alert::widget() ?>
+          <?= $content ?>
+        </section>
+      </div>
+
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs">&copy; <?= date('Y') ?> <a href="http://www.tjaldur.nl/">Tjaldur Software Governance Solutions</a>.</div>&nbsp;
+      </footer>
 
     <?php $this->endBody() ?>
 </body>

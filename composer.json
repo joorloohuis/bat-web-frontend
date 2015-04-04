@@ -16,7 +16,9 @@
         "yiisoft/yii2": "*",
         "yiisoft/yii2-bootstrap": "~2.0",
         "yiisoft/yii2-swiftmailer": "*",
-        "bower-asset/admin-lte": "*"
+        "bower-asset/admin-lte": "2.0.*",
+        "rmrevin/yii2-fontawesome": "2.8.*",
+        "gietos/yii2-ionicons": "2.0.*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
