@@ -6,9 +6,9 @@ use yii\base\Model;
 use Yii;
 
 /**
- * Signup form
+ * Registration form
  */
-class SignupForm extends Model
+class RegistrationForm extends Model
 {
     public $username;
     public $email;
@@ -40,7 +40,7 @@ class SignupForm extends Model
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup()
+    public function register()
     {
         if ($this->validate()) {
             $user = new User();

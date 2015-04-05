@@ -100,8 +100,8 @@ $this->registerCss("
             if (Yii::$app->user->isGuest) {
                 $items = [
                     [
-                        'label' => 'Sign up',
-                        'url' => ['/site/signup']
+                        'label' => 'Register',
+                        'url' => ['/site/registration']
                     ],
                     [
                         'label' => 'Log in',
@@ -120,10 +120,6 @@ $this->registerCss("
                 [
                     'label' => 'About',
                     'url' => ['/site/about']
-                ],
-                [
-                    'label' => 'Contact',
-                    'url' => ['/site/contact']
                 ],
             ]);
             echo Nav::widget(['items' => $items]);

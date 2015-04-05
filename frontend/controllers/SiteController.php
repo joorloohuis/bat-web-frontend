@@ -5,8 +5,7 @@ use Yii;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use frontend\models\RegistrationForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -26,10 +25,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'registration'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['registration'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -93,41 +92,23 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
-
     public function actionAbout()
     {
         return $this->render('about');
     }
 
-    public function actionSignup()
+    public function actionRegistration()
     {
-        $model = new SignupForm();
+        $model = new RegistrationForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            if ($user = $model->register()) {
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
                 }
             }
         }
 
-        return $this->render('signup', [
+        return $this->render('registration', [
             'model' => $model,
         ]);
     }
