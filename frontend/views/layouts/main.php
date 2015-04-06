@@ -10,12 +10,6 @@ use frontend\widgets\Alert;
 /* @var $content string */
 
 AppAsset::register($this);
-// minor overrides to the design
-$this->registerCss("
-.navbar-nav>.user-menu>.dropdown-menu>li.user-header {
-    height: auto;
-}
-");
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -100,29 +94,40 @@ $this->registerCss("
             if (Yii::$app->user->isGuest) {
                 $items = [
                     [
-                        'label' => 'Register',
-                        'url' => ['/site/registration']
+                        'label' => ' Register',
+                        'url' => ['/site/registration'],
                     ],
                     [
                         'label' => 'Log in',
-                        'url' => ['/site/login']
+                        'url' => ['/site/login'],
                     ]
                 ];
             }
             else {
                 $items = [
                     [
-                        'label' => 'Jobs'
+                        'label' => 'Jobs',
+                        'url' => '/site/jobs',
+                        'options' => [
+                            'class' => 'glyphicon glyphicon-tasks'
+                        ]
                     ]
                 ];
             }
-            $items = array_merge($items, [ // always visible
+            $items = array_merge([ // always visible
+                [
+                    'label' => 'Dashboard',
+                    'url' => ['/'],
+                ],
                 [
                     'label' => 'About',
-                    'url' => ['/site/about']
+                    'url' => ['/site/about'],
                 ],
+            ], $items);
+            echo Nav::widget([
+                'items' => $items,
+                'encodeLabels' => false
             ]);
-            echo Nav::widget(['items' => $items]);
             ?>
           </ul>
         </section>

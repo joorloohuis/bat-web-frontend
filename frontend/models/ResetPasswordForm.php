@@ -12,12 +12,20 @@ use Yii;
 class ResetPasswordForm extends Model
 {
     public $password;
+    public $repeatpassword;
 
     /**
      * @var \common\models\User
      */
     private $_user;
 
+    public function attributeLabels()
+    {
+        return [
+            'password' => 'Password',
+            'repeatpassword' => 'Repeat password',
+        ];
+    }
 
     /**
      * Creates a form model given a token.
@@ -46,6 +54,8 @@ class ResetPasswordForm extends Model
         return [
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+
+            ['repeatpassword', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match"],
         ];
     }
 

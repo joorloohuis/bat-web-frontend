@@ -10,20 +10,50 @@ $this->title = 'Registration';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-registration">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>Please fill out the following fields to register:</p>
-
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-registration']); ?>
-                <?= $form->field($model, 'username') ?>
-                <?= $form->field($model, 'email') ?>
-                <?= $form->field($model, 'password')->passwordInput() ?>
-                <div class="form-group">
-                    <?= Html::submitButton('Register', ['class' => 'btn btn-primary', 'name' => 'registration-button']) ?>
-                </div>
-            <?php ActiveForm::end(); ?>
-        </div>
+    <div class="register-box">
+      <div class="register-box-body">
+        <p class="login-box-msg">Register as a user</p>
+        <?php
+        $form = ActiveForm::begin(['id' => 'form-registration']);
+        echo $form->field($model, 'username', [
+            'template' => '<div class="form-group has-feedback">{input}<span class="glyphicon glyphicon-user form-control-feedback"></span>{error}</div>',
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('username'),
+        ]])->label(false);
+        echo $form->field($model, 'fullname', [
+            'template' => '<div class="form-group has-feedback">{input}<span class="glyphicon glyphicon-user form-control-feedback"></span>{error}</div>',
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('fullname'),
+        ]])->label(false);
+        echo $form->field($model, 'email', [
+            'template' => '<div class="form-group has-feedback">{input}<span class="glyphicon glyphicon-envelope form-control-feedback"></span>{error}</div>',
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('email'),
+        ]])->label(false);
+        echo $form->field($model, 'password', [
+            'template' => '<div class="form-group has-feedback">{input}<span class="glyphicon glyphicon-lock form-control-feedback"></span>{error}</div>',
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('password'),
+        ]])->passwordInput()->label(false);
+        echo $form->field($model, 'repeatpassword', [
+            'template' => '<div class="form-group has-feedback">{input}<span class="glyphicon glyphicon-check form-control-feedback"></span>{error}</div>',
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('repeatpassword'),
+        ]])->passwordInput()->label(false);
+        ?>
+          <div class="row">
+            <div class="col-xs-8">
+            </div>
+            <div class="col-xs-4">
+              <?= Html::submitButton('Register', [
+                  'class' => 'btn btn-primary btn-block btn-flat',
+                  'name' => 'registration-button',
+              ]) ?>
+            </div>
+          </div>
+        <?php ActiveForm::end(); ?>
+        <a href="/site/login" class="text-center">I'm already registered.</a>
+      </div>
     </div>
+
 </div>
