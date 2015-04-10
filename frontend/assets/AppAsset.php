@@ -18,5 +18,6 @@ class AppAsset extends AssetBundle
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
         '\rmrevin\yii\fontawesome\AssetBundle',
+        'frontend\assets\LocalOverrides',
     ];
 }

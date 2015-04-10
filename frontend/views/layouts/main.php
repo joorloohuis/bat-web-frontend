@@ -42,11 +42,14 @@ AppAsset::register($this);
                 ?>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <span class="glyphicon glyphicon-user"></span>
-                  <span><?= Yii::$app->user->identity->username ?></span>
+                  <span><?= Yii::$app->user->identity->fullname ?: Yii::$app->user->identity->username ?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <li class="user-header">
-                    <p><?= Yii::$app->user->identity->username ?> - <?= Yii::$app->user->identity->email ?></p>
+                    <p>
+                      <?= Yii::$app->user->identity->fullname ? Yii::$app->user->identity->fullname.' ('.Yii::$app->user->identity->username.')' : Yii::$app->user->identity->username ?><br />
+                      <?= Yii::$app->user->identity->email ?>
+                    </p>
                   </li>
                   <li class="user-footer">
                     <?php
@@ -106,17 +109,14 @@ AppAsset::register($this);
             else {
                 $items = [
                     [
-                        'label' => 'Jobs',
+                        'label' => ' Jobs',
                         'url' => '/site/jobs',
-                        'options' => [
-                            'class' => 'glyphicon glyphicon-tasks'
-                        ]
                     ]
                 ];
             }
             $items = array_merge([ // always visible
                 [
-                    'label' => 'Dashboard',
+                    'label' => ' Dashboard',
                     'url' => ['/'],
                 ],
                 [
@@ -142,7 +142,6 @@ AppAsset::register($this);
                     'label' => ' Dashboard',
                     'url' => '/',
                     'template' => "<li><i>{link}</i></li>\n",
-                    'class' => 'fa fa-dashboard',
                 ],
                 'itemTemplate' => "<li><i>{link}</i></li>\n",
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
