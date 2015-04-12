@@ -7,7 +7,7 @@ use yii\helpers\Console;
 use common\models\User;
 
 /**
-  * Manages users and access permissions
+  * Manages access permissions.
   */
 class RbacController extends Controller
 {
