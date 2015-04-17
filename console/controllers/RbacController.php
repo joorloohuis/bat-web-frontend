@@ -8,11 +8,21 @@ use common\models\User;
 
 /**
   * Manages access permissions.
+  *
+  * NB: management on the console is not subject to RBAC, and you have all permissions.
   */
 class RbacController extends Controller
 {
     const LIST_FORMAT_HEADER = '%8s %-20s %-20s %7s';
     const LIST_FORMAT_LINE   = '%8d %-20s %-20s %7s';
+
+    /**
+     * Alias for rbac/list
+     */
+    public function actionIndex()
+    {
+        return $this->actionList();
+    }
 
     /**
       * List all users with RBAC information.

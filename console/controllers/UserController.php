@@ -8,11 +8,21 @@ use common\models\User;
 
 /**
   * Manages users.
+  *
+  * NB: management on the console is not subject to RBAC, and you have all permissions.
   */
 class UserController extends Controller
 {
     const LIST_FORMAT_HEADER = '%8s %-20s %7s %-30s %-40s';
     const LIST_FORMAT_LINE   = '%8d %-20s %7s %-30s %-40s';
+
+    /**
+     * Alias for user/list
+     */
+    public function actionIndex()
+    {
+        return $this->actionList();
+    }
 
     /**
       * List all user information.
