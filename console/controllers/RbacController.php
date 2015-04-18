@@ -148,6 +148,8 @@ class RbacController extends Controller
     protected $rbacModel = [
         'user' => [
             'listJobs' => 'List jobs for the current user',
+            'addManufacturer' => 'Add manufacturers',
+            'updateManufacturer' => 'Update manufacturers',
         ],
         'api' => [
             'listAllJobs' => 'List jobs for all users',

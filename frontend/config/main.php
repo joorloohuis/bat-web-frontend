@@ -37,6 +37,10 @@ return [
                 'dashboard' => 'site/index',
             ],
         ],
+        'formatter' => [
+            'defaultTimeZone' => 'UTC',
+            'timeZone' => 'Europe/Amsterdam',
+        ]
     ],
     'params' => $params,
 ];
