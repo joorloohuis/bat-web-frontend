@@ -10,6 +10,7 @@ use frontend\widgets\Alert;
 /* @var $content string */
 
 AppAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -107,23 +108,49 @@ AppAsset::register($this);
                 ];
             }
             else {
-                $items = [
-                    [
-                        'label' => ' Jobs',
-                        'url' => '/site/jobs',
-                    ]
-                ];
+                // check role
+                $auth = Yii::$app->authManager;
+                $adminRole = $auth->getRole('admin');
+                $userRole = $auth->getRole('user');
+                $roles = $auth->getRolesByUser(Yii::$app->user->id);
+                if (in_array($adminRole, $roles)) {
+                    $items = [
+                        [
+                            'label' => 'Jobs',
+                            'url' => ['/job'],
+                            'active' => (Yii::$app->controller->id == 'job'),
+                        ],
+                        [
+                            'label' => 'Manufacturers',
+                            'url' => ['/manufacturer/index'],
+                            'active' => (Yii::$app->controller->id == 'manufacturer'),
+                        ],
+                    ];
+                }
+                elseif (in_array($userRole, $roles)) {
+                    $items = [
+                        [
+                            'label' => 'Jobs',
+                            'url' => ['/job'],
+                            'active' => (Yii::$app->controller->id == 'job'),
+                        ],
+                    ];
+                }
             }
-            $items = array_merge([ // always visible
+            $items = array_merge(
+            [ // always visible at top of menu
                 [
-                    'label' => ' Dashboard',
-                    'url' => ['/'],
+                    'label' => 'Dashboard',
+                    'url' => ['/site/index'],
                 ],
+            ],
+            $items,
+            [ // always visible at bottom of menu
                 [
                     'label' => 'About',
                     'url' => ['/site/about'],
                 ],
-            ], $items);
+            ]);
             echo Nav::widget([
                 'items' => $items,
                 'encodeLabels' => false
@@ -139,11 +166,11 @@ AppAsset::register($this);
           <?= Breadcrumbs::widget([
                 'tag' => 'ol',
                 'homeLink' => [
-                    'label' => ' Dashboard',
+                    'label' => 'Dashboard',
                     'url' => '/',
-                    'template' => "<li><i>{link}</i></li>\n",
+                    'template' => "<li>{link}</li>\n",
                 ],
-                'itemTemplate' => "<li><i>{link}</i></li>\n",
+                'itemTemplate' => "<li>{link}</li>\n",
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]);
           ?>
