@@ -18,25 +18,27 @@ $dataProvider = new ActiveDataProvider([
   <div class="box-body">
 
 <?php
-echo GridView::widget([
-    'dataProvider' => $dataProvider,
-    'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
-        'name',
-        [
-            'attribute' => 'created_at',
-            'format' => ['datetime', 'php:Y-m-d H:i:s']
+if (Yii::$app->user->can('listManufacturers')) {
+    echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'name',
+            [
+                'attribute' => 'created_at',
+                'format' => ['datetime', 'php:Y-m-d H:i:s']
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' => ['datetime', 'php:Y-m-d H:i:s']
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}'
+            ],
         ],
-        [
-            'attribute' => 'updated_at',
-            'format' => ['datetime', 'php:Y-m-d H:i:s']
-        ],
-        [
-            'class' => 'yii\grid\ActionColumn',
-            'template' => '{update}'
-        ],
-    ],
-]);
+    ]);
+}
 ?>
   </div>
 </div>
