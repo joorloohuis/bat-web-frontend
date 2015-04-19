@@ -104,7 +104,6 @@ class RbacController extends Controller
                 return false;
             }
         }
-        // omnipotent admin gets all permissions from other roles
         if (!$adminRole = $auth->getRole('admin')) {
             $adminRole = $auth->createRole('admin');
             $auth->add($adminRole);
@@ -114,6 +113,7 @@ class RbacController extends Controller
                 $role = $auth->createRole($roleName);
                 $auth->add($role);
             }
+            $existingPermissions = $auth->getPermissionsByRole($roleName);
             foreach ($permissions as $permissionName => $description) {
                 if (!$permission = $auth->getPermission($permissionName)) {
                     $permission = $auth->createPermission($permissionName);
@@ -124,6 +124,10 @@ class RbacController extends Controller
                 if (!$auth->hasChild($role, $permission)) {
                     $auth->addChild($role, $permission);
                 }
+                unset($existingPermissions[$permissionName]);
+            }
+            foreach ($existingPermissions as $permission) {
+                $auth->removeChild($role, $permission);
             }
             if ($role != $adminRole && !$auth->hasChild($adminRole, $role)) {
                 $auth->addChild($adminRole, $role);
@@ -148,6 +152,7 @@ class RbacController extends Controller
     protected $rbacModel = [
         'user' => [
             'listJobs' => 'List jobs for the current user',
+            'listManufacturers' => 'List all manufacturers',
             'addManufacturer' => 'Add manufacturers',
             'updateManufacturer' => 'Update manufacturers',
         ],
@@ -155,7 +160,6 @@ class RbacController extends Controller
             'listAllJobs' => 'List jobs for all users',
         ],
         'admin' => [ // NB: admin will inherit all permissions from other roles
-            'listManufacturers' => 'List all manufacturers',
         ]
     ];
 
