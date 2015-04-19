@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\LoginForm;
+use frontend\models\User;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\RegistrationForm;
@@ -149,4 +150,27 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionProfile()
+    {
+        if ($post = Yii::$app->request->post('User')) {
+            $profile = User::findOne(['id' => Yii::$app->user->identity->id]);
+            $profile->fullname = $post['fullname'];
+            $profile->email = $post['email'];
+            if ($profile->validate()) {
+                if ($profile->update()) {
+                    Yii::$app->getSession()->setFlash('success', 'Profile updated.');
+                } else {
+                    Yii::$app->getSession()->setFlash('error', 'Failed to update profile.');
+                }
+            }
+        }
+        else {
+            $profile = Yii::$app->user->identity;
+        }
+        return $this->render('profile', [
+            'model' => $profile,
+        ]);
+    }
+
 }

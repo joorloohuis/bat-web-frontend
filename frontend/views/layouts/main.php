@@ -58,7 +58,7 @@ AppAsset::register($this);
                         'items' => [
                             [
                                 'label' => 'Profile',
-                                'url' => ['site/profile],
+                                'url' => ['site/profile'],
                                 'options' => [
                                     'class' => 'pull-left'
                                 ],
