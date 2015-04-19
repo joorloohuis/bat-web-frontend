@@ -25,7 +25,6 @@ class ManufacturerController extends \yii\web\Controller
 
         return $this->render('edit', [
             'model' => $model,
-            'request' => Yii::$app->request->get(),
         ]);
     }
 
