@@ -58,7 +58,7 @@ AppAsset::register($this);
                         'items' => [
                             [
                                 'label' => 'Profile',
-                                'url' => ['#'],
+                                'url' => ['site/profile],
                                 'options' => [
                                     'class' => 'pull-left'
                                 ],
@@ -124,6 +124,11 @@ AppAsset::register($this);
                             'label' => 'Manufacturers',
                             'url' => ['/manufacturer/index'],
                             'active' => (Yii::$app->controller->id == 'manufacturer'),
+                        ],
+                        [
+                            'label' => 'Device Types',
+                            'url' => ['/device-type/index'],
+                            'active' => (Yii::$app->controller->id == 'device-type'),
                         ],
                     ];
                 }

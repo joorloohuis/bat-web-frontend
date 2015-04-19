@@ -153,8 +153,11 @@ class RbacController extends Controller
         'user' => [
             'listJobs' => 'List jobs for the current user',
             'listManufacturers' => 'List all manufacturers',
-            'addManufacturer' => 'Add manufacturers',
-            'updateManufacturer' => 'Update manufacturers',
+            'addManufacturer' => 'Add manufacturer',
+            'updateManufacturer' => 'Update manufacturer',
+            'listDeviceTypes' => 'List all manufacturers',
+            'addDeviceType' => 'Add device type',
+            'updateDeviceType' => 'Update device type',
         ],
         'api' => [
             'listAllJobs' => 'List jobs for all users',
