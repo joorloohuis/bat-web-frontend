@@ -125,7 +125,7 @@ class RbacController extends Controller
                     $auth->addChild($role, $permission);
                 }
             }
-            if (!$auth->hasChild($adminRole, $role)) {
+            if ($role != $adminRole && !$auth->hasChild($adminRole, $role)) {
                 $auth->addChild($adminRole, $role);
             }
         }
@@ -154,6 +154,9 @@ class RbacController extends Controller
         'api' => [
             'listAllJobs' => 'List jobs for all users',
         ],
+        'admin' => [ // NB: admin will inherit all permissions from other roles
+            'listManufacturers' => 'List all manufacturers',
+        ]
     ];
 
 }
