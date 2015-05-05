@@ -13,6 +13,11 @@ return [
     'controllerNamespace' => 'console\controllers',
     'modules' => [
         'gii' => 'yii\gii\Module',
+        'rbac' => [
+            'class' => 'common\modules\rbac\RBAC',
+            'adminRole' => 'admin', // NB: admin will inherit all permissions from other roles
+            'rbacModel' => include(__DIR__ . '/rbacmodel.php'),
+        ],
     ],
     'components' => [
         'log' => [

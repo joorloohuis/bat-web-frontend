@@ -1,5 +1,5 @@
 <?php
-namespace console\controllers;
+namespace common\modules\rbac\controllers;
 
 use Yii;
 use yii\console\Controller;
@@ -7,12 +7,13 @@ use yii\helpers\Console;
 use common\models\User;
 
 /**
-  * Manages access permissions.
+  * Console RBAC access permission maintenance.
   *
-  * NB: management on the console is not subject to RBAC, and you have all permissions.
+  * NB: maintenance on the console is not subject to RBAC, and you have all permissions.
   */
-class RbacController extends Controller
+class MaintenanceController extends Controller
 {
+
     const LIST_FORMAT_HEADER = '%8s %-20s %-20s %7s';
     const LIST_FORMAT_LINE   = '%8d %-20s %-20s %7s';
 
@@ -44,6 +45,15 @@ class RbacController extends Controller
     }
 
     /**
+      * List all available roles.
+      */
+    public function actionListRoles()
+    {
+        echo 'Available RBAC roles: '. implode(', ', array_keys($this->module->rbacModel)).PHP_EOL;
+        return Controller::EXIT_CODE_NORMAL;
+    }
+
+    /**
       * Initialize RBAC with roles and permissions.
       * Removes any existing RBAC data.
       */
@@ -68,14 +78,12 @@ class RbacController extends Controller
 
     /**
      * Assign a role to user.
-     * Note that roles are exclusive, a user can only assume a single role.
      * @param int|string $id user id
      * @param string $role name of the role that should be assigned to the user
      *
      */
     public function actionAssign($uid, $roleName) {
-        $user = User::findOne($uid);
-        if (!$user) {
+        if (!$user = User::findOne($uid)) {
             $this->showError('No user with id ' . $uid . '.');
             return Controller::EXIT_CODE_ERROR;
         }
@@ -84,13 +92,38 @@ class RbacController extends Controller
             $this->showError('No role with name ' . $roleName . '.');
             return Controller::EXIT_CODE_ERROR;
         }
+
         $roles = $auth->getRolesByUser($uid);
-        // revoke any roles the user has
-        foreach ($roles as $revokeRole) {
-            $auth->revoke($revokeRole, $uid);
+        if (!array_key_exists($roleName, $roles)) {
+            $auth->assign($role, $uid);
         }
-        $auth->assign($role, $uid);
         return Controller::EXIT_CODE_NORMAL;
+    }
+
+    /**
+     * Remove a role from a user user. If no role is specified, all roles will be removed.
+     * @param int|string $id user id
+     *
+     */
+    public function actionUnassign($uid, $roleName = null) {
+        if (!$user = User::findOne($uid)) {
+            $this->showError('No user with id ' . $uid . '.');
+            return Controller::EXIT_CODE_ERROR;
+        }
+        $auth = Yii::$app->authManager;
+        if ($roleName && !$role = $auth->getRole($roleName)) {
+            $this->showError('No role with name ' . $roleName . '.');
+            return Controller::EXIT_CODE_ERROR;
+        }
+        $roles = $auth->getRolesByUser($uid);
+        if ($roleName) {
+            $auth->revoke($role, $uid);
+        }
+        else {
+            foreach ($roles as $revokeRole) {
+                $auth->revoke($revokeRole, $uid);
+            }
+        }
     }
 
     protected function buildRbacModel($reset = false) {
@@ -104,11 +137,11 @@ class RbacController extends Controller
                 return false;
             }
         }
-        if (!$adminRole = $auth->getRole('admin')) {
-            $adminRole = $auth->createRole('admin');
+        if (!$adminRole = $auth->getRole($this->module->adminRole)) {
+            $adminRole = $auth->createRole($this->module->adminRole);
             $auth->add($adminRole);
         }
-        foreach ($this->rbacModel as $roleName => $permissions) {
+        foreach ($this->module->rbacModel as $roleName => $permissions) {
             if (!$role = $auth->getRole($roleName)) {
                 $role = $auth->createRole($roleName);
                 $auth->add($role);
@@ -149,21 +182,5 @@ class RbacController extends Controller
         User::STATUS_DELETED => 'deleted',
     ];
 
-    protected $rbacModel = [
-        'user' => [
-            'listJobs' => 'List jobs for the current user',
-            'listManufacturers' => 'List all manufacturers',
-            'addManufacturer' => 'Add manufacturer',
-            'updateManufacturer' => 'Update manufacturer',
-            'listDeviceTypes' => 'List all manufacturers',
-            'addDeviceType' => 'Add device type',
-            'updateDeviceType' => 'Update device type',
-        ],
-        'api' => [
-            'listAllJobs' => 'List jobs for all users',
-        ],
-        'admin' => [ // NB: admin will inherit all permissions from other roles
-        ]
-    ];
 
 }
