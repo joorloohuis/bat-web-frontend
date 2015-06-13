@@ -1,4 +1,8 @@
 /* overrides to AdminLTE */
+body {
+/*    font-size: 12px;*/
+}
+
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header {
     height: auto !important;
 }

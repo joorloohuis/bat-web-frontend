@@ -18,7 +18,7 @@ $dataProvider = new ActiveDataProvider([
   <div class="box-body">
 
 <?php
-if (Yii::$app->user->can('listManufacturers')) {
+if (Yii::$app->user->can('listResources')) {
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [

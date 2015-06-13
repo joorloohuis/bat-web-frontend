@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
+use \yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "model_number".
@@ -15,7 +17,7 @@ use Yii;
  *
  * @property Manufacturer $manufacturer
  */
-class ModelNumber extends \yii\db\ActiveRecord
+class ModelNumber extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -54,7 +56,7 @@ class ModelNumber extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'value' => 'Value',
-            'manufacturer_id' => 'Manufacturer ID',
+            'manufacturer_id' => 'Manufacturer',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

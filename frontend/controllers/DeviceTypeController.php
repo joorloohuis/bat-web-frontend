@@ -10,7 +10,7 @@ class DeviceTypeController extends \yii\web\Controller
 
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('listDeviceTypes')) {
+        if (!Yii::$app->user->can('listResources')) {
             Yii::$app->getSession()->setFlash('error', 'Not allowed.');
         }
         return $this->render('index');
@@ -30,16 +30,16 @@ class DeviceTypeController extends \yii\web\Controller
 
     public function actionSave()
     {
-        if (Yii::$app->user->can('updateDeviceType')) {
+        if (Yii::$app->user->can('updateResource')) {
             $post = Yii::$app->request->post('DeviceType');
             if ($post['id']) {
                 $model = DeviceType::findOne(['id' => $post['id']]);
                 $model->attributes = $post;
                 if ($model->validate()) {
                     if ($model->update()) {
-                        Yii::$app->getSession()->setFlash('success', 'Device type updated.');
+                        Yii::$app->getSession()->setFlash('success', 'Device type #'.$post['id'].' updated.');
                     } else {
-                        Yii::$app->getSession()->setFlash('error', 'Failed to update device type.');
+                        Yii::$app->getSession()->setFlash('error', 'Failed to update device type #'.$post['id'].'.');
                     }
                 }
             }

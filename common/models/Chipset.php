@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
+use \yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "chipset".
@@ -12,7 +14,7 @@ use Yii;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Chipset extends \yii\db\ActiveRecord
+class Chipset extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -31,6 +33,13 @@ class Chipset extends \yii\db\ActiveRecord
             [['value'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['value'], 'string', 'max' => 255]
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
         ];
     }
 

@@ -3,9 +3,9 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\Manufacturer;
+use common\models\Firmware;
 
-class ManufacturerController extends \yii\web\Controller
+class FirmwareController extends \yii\web\Controller
 {
 
     public function actionIndex()
@@ -18,8 +18,8 @@ class ManufacturerController extends \yii\web\Controller
 
     public function actionUpdate()
     {
-        if (!$model = Manufacturer::findOne(['id' => Yii::$app->request->get('id')])) {
-            Yii::$app->getSession()->setFlash('error', 'No such manufacturer.');
+        if (!$model = Firmware::findOne(['id' => Yii::$app->request->get('id')])) {
+            Yii::$app->getSession()->setFlash('error', 'No such firmware.');
             return $this->render('index');
         }
 
@@ -31,15 +31,15 @@ class ManufacturerController extends \yii\web\Controller
     public function actionSave()
     {
         if (Yii::$app->user->can('updateResource')) {
-            $post = Yii::$app->request->post('Manufacturer');
+            $post = Yii::$app->request->post('Firmware');
             if ($post['id']) {
-                $model = Manufacturer::findOne(['id' => $post['id']]);
+                $model = Firmware::findOne(['id' => $post['id']]);
                 $model->attributes = $post;
                 if ($model->validate()) {
                     if ($model->update()) {
-                        Yii::$app->getSession()->setFlash('success', 'Manufacturer #'.$post['id'].' updated.');
+                        Yii::$app->getSession()->setFlash('success', 'Firmware updated.');
                     } else {
-                        Yii::$app->getSession()->setFlash('error', 'Failed to update manufacturer #'.$post['id'].'.');
+                        Yii::$app->getSession()->setFlash('error', 'Failed to update firmware.');
                     }
                 }
             }

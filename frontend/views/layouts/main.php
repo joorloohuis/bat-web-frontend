@@ -108,17 +108,37 @@ AppAsset::register($this);
                 ];
             }
             else {
-                // check role
-                $auth = Yii::$app->authManager;
-                $adminRole = $auth->getRole('admin');
-                $userRole = $auth->getRole('user');
-                $roles = $auth->getRolesByUser(Yii::$app->user->id);
-                if (in_array($adminRole, $roles)) {
-                    $items = [
+                $items = [];
+                if (Yii::$app->user->can('user')) {
+                    $items = array_merge($items, [
                         [
                             'label' => 'Jobs',
                             'url' => ['/job'],
                             'active' => (Yii::$app->controller->id == 'job'),
+                        ],
+                    ]);
+                }
+                if (Yii::$app->user->can('admin')) {
+                    $items = array_merge($items, [
+                        [
+                            'label' => 'Firmwares',
+                            'url' => ['/firmware/index'],
+                            'active' => (Yii::$app->controller->id == 'firmware'),
+                        ],
+                        [
+                            'label' => 'Uploads',
+                            'url' => ['/upload/index'],
+                            'active' => (Yii::$app->controller->id == 'upload'),
+                        ],
+                        [
+                            'label' => 'Device Types',
+                            'url' => ['/device-type/index'],
+                            'active' => (Yii::$app->controller->id == 'device-type'),
+                        ],
+                        [
+                            'label' => 'Chipsets',
+                            'url' => ['/chipset/index'],
+                            'active' => (Yii::$app->controller->id == 'chipset'),
                         ],
                         [
                             'label' => 'Manufacturers',
@@ -126,20 +146,11 @@ AppAsset::register($this);
                             'active' => (Yii::$app->controller->id == 'manufacturer'),
                         ],
                         [
-                            'label' => 'Device Types',
-                            'url' => ['/device-type/index'],
-                            'active' => (Yii::$app->controller->id == 'device-type'),
+                            'label' => 'Model Numbers',
+                            'url' => ['/model-number/index'],
+                            'active' => (Yii::$app->controller->id == 'model-number'),
                         ],
-                    ];
-                }
-                elseif (in_array($userRole, $roles)) {
-                    $items = [
-                        [
-                            'label' => 'Jobs',
-                            'url' => ['/job'],
-                            'active' => (Yii::$app->controller->id == 'job'),
-                        ],
-                    ];
+                    ]);
                 }
             }
             $items = array_merge(

@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m150501_113912_modelnumbers extends Migration
+class m150501_113912_modelnumber extends Migration
 {
     public function up()
     {
@@ -19,7 +19,7 @@ class m150501_113912_modelnumbers extends Migration
             'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
             'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
         ], $tableOptions);
-        $this->addForeignKey('fk_manufacturer', 'model_number', 'manufacturer_id', 'manufacturer', 'id', 'SET NULL', 'NO ACTION');
+        $this->addForeignKey('fk_model_number_manufacturer', 'model_number', 'manufacturer_id', 'manufacturer', 'id', 'SET NULL', 'NO ACTION');
     }
 
     public function down()

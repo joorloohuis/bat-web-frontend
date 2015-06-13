@@ -18,7 +18,7 @@ class User extends \common\models\User
                 ['email', 'filter', 'filter' => 'trim'],
                 ['email', 'required'],
                 ['email', 'email'],
-                ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+                ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address is already in use.'],
             ]
         );
     }

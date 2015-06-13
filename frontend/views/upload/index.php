@@ -1,14 +1,14 @@
 <?php
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
-use common\models\DeviceType;
+use common\models\Upload;
 
 /* @var $this yii\web\View */
-$this->title = 'Device Types';
+$this->title = 'Uploads';
 $this->params['breadcrumbs'][] = $this->title;
 
 $dataProvider = new ActiveDataProvider([
-    'query' => DeviceType::find(),
+    'query' => Upload::find(),
     'pagination' => [
         'pageSize' => 20,
     ],
@@ -23,18 +23,19 @@ if (Yii::$app->user->can('listResources')) {
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'name',
+            'filename',
+            'filesize',
+            'mimetype',
+            [
+                'attribute' => 'created_by',
+            ],
             [
                 'attribute' => 'created_at',
                 'format' => ['datetime', 'php:Y-m-d H:i:s']
             ],
             [
-                'attribute' => 'updated_at',
-                'format' => ['datetime', 'php:Y-m-d H:i:s']
-            ],
-            [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}'
+                'template' => '{update} {delete}'
             ],
         ],
     ]);

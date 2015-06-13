@@ -1,14 +1,14 @@
 <?php
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
-use common\models\DeviceType;
+use common\models\Chipset;
 
 /* @var $this yii\web\View */
-$this->title = 'Device Types';
+$this->title = 'Chipsets';
 $this->params['breadcrumbs'][] = $this->title;
 
 $dataProvider = new ActiveDataProvider([
-    'query' => DeviceType::find(),
+    'query' => Chipset::find(),
     'pagination' => [
         'pageSize' => 20,
     ],
@@ -23,7 +23,7 @@ if (Yii::$app->user->can('listResources')) {
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'name',
+            'value',
             [
                 'attribute' => 'created_at',
                 'format' => ['datetime', 'php:Y-m-d H:i:s']
