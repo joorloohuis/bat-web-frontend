@@ -9,13 +9,13 @@ use yii\filters\auth\AuthMethod;
  *
  * @author Joor Loohuis <joor.loohuis@gmail.com>
  */
-class QueryHeaderAuth extends AuthMethod
+class RequestHeaderAuth extends AuthMethod
 {
 
     /**
      * @var string the header name for passing the access token
      */
-    public $tokenHeader = 'X-Token-Header';
+    public $tokenHeader = 'X-Access-Token';
 
 
     /**
