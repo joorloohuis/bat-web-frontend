@@ -92,6 +92,16 @@ class Firmware extends \yii\db\ActiveRecord
     }
 
     /**
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function findByUser($id)
+    {
+        return Firmware::find()
+            ->where(['created_by' => $id]);
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getChipset()

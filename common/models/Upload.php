@@ -6,6 +6,8 @@ use Yii;
 use \yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
+use yii\helpers\FileHelper;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "upload".
@@ -14,6 +16,7 @@ use yii\behaviors\BlameableBehavior;
  * @property string $filename
  * @property string $filesize
  * @property string $checksum
+ * @property string $uniqid
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $created_by
@@ -35,10 +38,10 @@ class Upload extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['filename', 'filesize', 'mimetype', 'checksum', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
+            [['filename'], 'required'],
             [['filesize', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
-            [['filename', 'mimetype', 'checksum', 'created_by', 'updated_by'], 'string', 'max' => 255]
+            [['filename', 'mimetype', 'checksum', 'uniqid', 'created_by', 'updated_by'], 'string', 'max' => 255]
         ];
     }
 
@@ -75,6 +78,20 @@ class Upload extends \yii\db\ActiveRecord
         ];
     }
 
+    // create upload model from uploaded file, store in assigned location
+    public function createFromUploadedFile(UploadedFile $file)
+    {
+        $this->mimetype = FileHelper::getMimeType($file->tempName);
+        $this->checksum = sha1_file($file->tempName);
+        $this->uniqid = uniqid();
+        $this->filename = $file->getBaseName() . '.' . $file->getExtension();
+        $this->filesize = $file->size;
+
+        $this->createContainerDir();
+        $file->SaveAs($this->getContainerDir() . '/' . $this->filename);
+        $this->save();
+    }
+
     // internally set checksum and filesize, make sure file is in the right location
     protected function setFileProperties()
     {
@@ -92,18 +109,6 @@ class Upload extends \yii\db\ActiveRecord
         }
     }
 
-    public function save($runValidation = true, $attributeNames = NULL)
-    {
-        $this->setFileProperties();
-        return parent::save($runValidation = true, $attributeNames = NULL);
-    }
-
-    public function update($runValidation = true, $attributeNames = NULL)
-    {
-        $this->setFileProperties();
-        return parent::update($runValidation = true, $attributeNames = NULL);
-    }
-
     public function delete()
     {
         $filename = $this->getContainerDir() . '/' . $this->filename;
@@ -115,13 +120,14 @@ class Upload extends \yii\db\ActiveRecord
 
     public function getContainerDir()
     {
-        // reduce the number of files in a directory, use part of the checksum to create subdirs
-        return Yii::$app->params['fileStorePath'] . '/' . substr($this->checksum, 0, 2);
+        // reduce the number of files in a directory, use the checksum to create subdirs
+        // same file may be uploaded more than once, tack a uniqid onto the subdir
+        return Yii::$app->params['fileStorePath'] . '/' . $this->checksum . '/' . $this->uniqid;
     }
 
     public function createContainerDir()
     {
-        return mkdir($this->getContainerDir(), 0755, true);
+        return FileHelper::createDirectory($this->getContainerDir(), 0755, true);
     }
 
 }

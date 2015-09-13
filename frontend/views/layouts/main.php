@@ -112,6 +112,11 @@ AppAsset::register($this);
                 if (Yii::$app->user->can('user')) {
                     $items = array_merge($items, [
                         [
+                            'label' => 'Firmwares',
+                            'url' => ['/firmware/index'],
+                            'active' => (Yii::$app->controller->id == 'firmware'),
+                        ],
+                        [
                             'label' => 'Jobs',
                             'url' => ['/job'],
                             'active' => (Yii::$app->controller->id == 'job'),
@@ -120,11 +125,6 @@ AppAsset::register($this);
                 }
                 if (Yii::$app->user->can('admin')) {
                     $items = array_merge($items, [
-                        [
-                            'label' => 'Firmwares',
-                            'url' => ['/firmware/index'],
-                            'active' => (Yii::$app->controller->id == 'firmware'),
-                        ],
                         [
                             'label' => 'Uploads',
                             'url' => ['/upload/index'],

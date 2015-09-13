@@ -1,22 +1,54 @@
 <?php
+use Yii;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use common\models\Firmware;
+use frontend\models\UploadForm;
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Button;
+use kartik\file\FileInput;
 
-/* @var $this yii\web\View */
+// @var $this yii\web\View
+// @var $form yii\bootstrap\ActiveForm
+// @var $model \common\models\UploadForm
+
 $this->title = 'Firmwares';
 $this->params['breadcrumbs'][] = $this->title;
 
 $dataProvider = new ActiveDataProvider([
-    'query' => Firmware::find(),
+    // regular users only have access to their own data
+    'query' => Yii::$app->user->can('admin') ? Firmware::find() : Firmware::findByUser(Yii::$app->user->getId()),
     'pagination' => [
         'pageSize' => 20,
     ],
 ]);
 ?>
+
 <div class="box">
   <div class="box-body">
+<?php $form = ActiveForm::begin([
+    'id' => 'upload-form',
+    'action' => '/firmware/upload',
+    'options' => [
+        'enctype' => 'multipart/form-data',
+        'class' => 'form-inline',
+    ],
+])?>
+<?=$form->field($model, 'file')->widget(FileInput::classname(), [
+    'pluginOptions' => [
+        'showPreview' => false,
+        'showCaption' => true,
+        'showRemove' => true,
+        'showUpload' => true,
+        'browseLabel' =>  'Add firmware'
+    ],
+])?>
+<?php ActiveForm::end() ?>
+  </div>
+</div>
 
+<div class="box">
+  <div class="box-body">
 <?php
 if (Yii::$app->user->can('listResources')) {
     echo GridView::widget([
