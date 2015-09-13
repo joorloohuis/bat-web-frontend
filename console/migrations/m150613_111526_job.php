@@ -22,6 +22,7 @@ class m150613_111526_job extends Migration
             'created_by' => Schema::TYPE_STRING . ' NOT NULL',
             'updated_by' => Schema::TYPE_STRING . ' NOT NULL',
         ], $tableOptions);
+        $this->addForeignKey('fk_job_firmware', 'job', 'firmware_id', 'firmware', 'id', 'CASCADE', 'NO ACTION');
         $this->createTable('job_status', [
             'id' => Schema::TYPE_PK,
             'job_id' => Schema::TYPE_INTEGER,
@@ -32,11 +33,12 @@ class m150613_111526_job extends Migration
             'created_by' => Schema::TYPE_STRING . ' NOT NULL',
             'updated_by' => Schema::TYPE_STRING . ' NOT NULL',
         ], $tableOptions);
+        $this->addForeignKey('fk_job_status_job', 'job_status', 'job_id', 'job', 'id', 'CASCADE', 'NO ACTION');
     }
 
     public function down()
     {
-        $this->dropTable('job');
         $this->dropTable('job_status');
+        $this->dropTable('job');
     }
 }

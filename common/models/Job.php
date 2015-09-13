@@ -15,6 +15,9 @@ use Yii;
  * @property integer $updated_at
  * @property string $created_by
  * @property string $updated_by
+ *
+ * @property Firmware $firmware
+ * @property JobStatus[] $jobStatuses
  */
 class Job extends \yii\db\ActiveRecord
 {
@@ -54,5 +57,21 @@ class Job extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFirmware()
+    {
+        return $this->hasOne(Firmware::className(), ['id' => 'firmware_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getJobStatuses()
+    {
+        return $this->hasMany(JobStatus::className(), ['job_id' => 'id']);
     }
 }

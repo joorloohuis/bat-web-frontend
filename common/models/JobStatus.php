@@ -15,6 +15,8 @@ use Yii;
  * @property integer $updated_at
  * @property string $created_by
  * @property string $updated_by
+ *
+ * @property Job $job
  */
 class JobStatus extends \yii\db\ActiveRecord
 {
@@ -54,5 +56,13 @@ class JobStatus extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getJob()
+    {
+        return $this->hasOne(Job::className(), ['id' => 'job_id']);
     }
 }
