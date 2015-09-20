@@ -52,7 +52,7 @@ class Firmware extends \yii\db\ActiveRecord
     {
         return [
             [['upload_id', 'manufacturer_id', 'model_number_id', 'device_type_id', 'odm_id', 'chipset_id', 'image_upload_id', 'created_at', 'updated_at'], 'integer'],
-            [['created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
+//            [['created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
             [['download_url', 'notes'], 'string'],
             [['fcc_number', 'mac_address', 'created_by', 'updated_by'], 'string', 'max' => 255]
         ];
@@ -62,7 +62,13 @@ class Firmware extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::className(),
-            BlameableBehavior::className(),
+            [
+                'class' => BlameableBehavior::className(),
+                'value' => function($event) {
+                    $user = Yii::$app->get('user', false);
+                    return $user && !$user->isGuest ? $user->identity->username : null;
+                },
+            ],
         ];
     }
 
@@ -89,6 +95,22 @@ class Firmware extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    public static function createFromUpload(Upload $upload)
+    {
+        $firmware = new static();
+        $firmware->upload_id = $upload->id;
+        $firmware->save();
+        return $firmware;
+    }
+
+    public function delete()
+    {
+        if (!$this->getUpload()->one()->delete()) {
+            return false;
+        }
+        return parent::delete();
     }
 
     /**

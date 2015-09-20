@@ -79,17 +79,19 @@ class Upload extends \yii\db\ActiveRecord
     }
 
     // create upload model from uploaded file, store in assigned location
-    public function createFromUploadedFile(UploadedFile $file)
+    public static function createFromUploadedFile(UploadedFile $file)
     {
-        $this->mimetype = FileHelper::getMimeType($file->tempName);
-        $this->checksum = sha1_file($file->tempName);
-        $this->uniqid = uniqid();
-        $this->filename = $file->getBaseName() . '.' . $file->getExtension();
-        $this->filesize = $file->size;
+        $upload = new static();
+        $upload->mimetype = FileHelper::getMimeType($file->tempName);
+        $upload->checksum = sha1_file($file->tempName);
+        $upload->uniqid = uniqid();
+        $upload->filename = $file->getBaseName() . '.' . $file->getExtension();
+        $upload->filesize = $file->size;
 
-        $this->createContainerDir();
-        $file->SaveAs($this->getContainerDir() . '/' . $this->filename);
-        $this->save();
+        $upload->createContainerDir();
+        $file->SaveAs($upload->getContainerDir() . '/' . $upload->filename);
+        $upload->save();
+        return $upload;
     }
 
     // internally set checksum and filesize, make sure file is in the right location

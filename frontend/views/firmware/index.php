@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $dataProvider = new ActiveDataProvider([
     // regular users only have access to their own data
-    'query' => Yii::$app->user->can('admin') ? Firmware::find() : Firmware::findByUser(Yii::$app->user->getId()),
+    'query' => Yii::$app->user->can('admin') ? Firmware::find() : Firmware::findByUser(Yii::$app->user->identity->username),
     'pagination' => [
         'pageSize' => 20,
     ],
@@ -34,7 +34,7 @@ $dataProvider = new ActiveDataProvider([
         'class' => 'form-inline',
     ],
 ])?>
-<?=$form->field($model, 'file')->widget(FileInput::classname(), [
+<?=$form->field($model = new UploadForm(), 'file')->widget(FileInput::classname(), [
     'pluginOptions' => [
         'showPreview' => false,
         'showCaption' => true,

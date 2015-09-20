@@ -7,7 +7,7 @@ use common\models\Manufacturer;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \common\models\Firmware */
+/* @var $firmware \common\models\Firmware */
 
 $this->title = 'Edit firmware';
 $this->params['breadcrumbs'][] = ['label' => 'Uploads', 'url' => '/upload'];
@@ -20,13 +20,13 @@ $form = ActiveForm::begin([
     'action' => 'save',
 ]);
 ?>
-  <?= Html::activeHiddenInput($model, 'id') ?>
+  <?= Html::activeHiddenInput($firmware, 'id') ?>
   <div class="box-body">
     <div class="form-group">
-      <?= $form->field($model, 'upload_id')->textInput(['readonly' => true]) ?>
+      <?= $form->field($firmware, 'upload_id')->textInput(['readonly' => true]) ?>
 
-      <?= $form->field($model, 'fcc_number') ?>
-      <?= $form->field($model, 'manufacturer_id')->dropDownList(ArrayHelper::map(Manufacturer::find()->orderBy('name')->all(), 'id', 'name')) ?>
+      <?= $form->field($firmware, 'fcc_number') ?>
+      <?= $form->field($firmware, 'manufacturer_id')->dropDownList(ArrayHelper::map(Manufacturer::find()->orderBy('name')->all(), 'id', 'name')) ?>
 
     </div>
     <div class="box-footer">

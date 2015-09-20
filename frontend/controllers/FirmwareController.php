@@ -18,55 +18,54 @@ class FirmwareController extends \yii\web\Controller
         }
         // restriction for regular users is handled in the view
 
-        return $this->render('index', [
-            'model' => new UploadForm(),
-        ]);
+        return $this->render('index');
     }
 
     public function actionUpload()
     {
         if (Yii::$app->user->can('createResource')) {
-            $model = new UploadForm();
+            $form = new UploadForm();
             if (Yii::$app->request->isPost) {
-                $file = UploadedFile::getInstance($model, 'file');
+                $file = UploadedFile::getInstance($form, 'file');
                 if ($file->getHasError()) {
                     Yii::$app->getSession()->setFlash('error', $file->error);
-                    return $this->render('index', [
-                        'model' => new UploadForm(),
+                    return $this->render('index');
+                }
+                $upload = Upload::createFromUploadedFile($file);
+                if ($upload->hasErrors()) {
+                    Yii::$app->getSession()->setFlash('error', $upload->getErrors());
+                    return $this->render('index');
+                }
+                else {
+                    $firmware = Firmware::createFromUpload($upload);
+                    if ($firmware->hasErrors()) {
+                        Yii::$app->getSession()->setFlash('error', $firmware->getErrors());
+                        return $this->render('index');
+                    }
+
+                    return $this->render('edit', [
+                        'firmware' => $firmware,
                     ]);
                 }
-                $upload = new Upload();
-                $upload->createFromUploadedFile($file);
-                // create firmware
-                // add upload to firmware
-
-                return $this->render('index', [
-                    'model' => new UploadForm(),
-                ]);
-                // return $this->render('edit', [
-                //     'model' => $model,
-                // ]);
             }
         }
         else {
             Yii::$app->getSession()->setFlash('error', 'Not allowed.');
-            return $this->render('index', [
-                'model' => new UploadForm(),
-            ]);
+            return $this->render('index');
         }
     }
 
     public function actionUpdate()
     {
         if (Yii::$app->user->can('updateResource')) {
-            if (!$model = Firmware::findOne(['id' => Yii::$app->request->get('id')])) {
+            if (!$firmware = Firmware::findOne(['id' => Yii::$app->request->get('id')])) {
                 Yii::$app->getSession()->setFlash('error', 'No such firmware.');
                 return $this->render('index');
             }
         }
 
         return $this->render('edit', [
-            'model' => $model,
+            'firmware' => $firmware,
         ]);
     }
 
@@ -80,9 +79,30 @@ class FirmwareController extends \yii\web\Controller
                 if ($model->validate()) {
                     if ($model->update()) {
                         Yii::$app->getSession()->setFlash('success', 'Firmware updated.');
-                    } else {
+                    }
+                    else {
                         Yii::$app->getSession()->setFlash('error', 'Failed to update firmware.');
                     }
+                }
+            }
+        }
+        else {
+            Yii::$app->getSession()->setFlash('error', 'Not allowed.');
+        }
+        return $this->redirect(['index']);
+    }
+
+    public function actionDelete()
+    {
+        if (Yii::$app->user->can('deleteResource')) {
+            $id = Yii::$app->request->get('id');
+            if ($id) {
+                $model = Firmware::findOne(['id' => $id]);
+                if ($model->delete()) {
+                    Yii::$app->getSession()->setFlash('success', 'Firmware deleted.');
+                }
+                else {
+                    Yii::$app->getSession()->setFlash('error', 'Failed to delete firmware.');
                 }
             }
         }
