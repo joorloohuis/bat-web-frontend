@@ -3,10 +3,21 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\helpers\Json;
 use common\models\DeviceType;
 
 class DeviceTypeController extends \yii\web\Controller
 {
+
+    // list fetch for typeahead widgets
+    public function actionList() {
+        echo Json::encode(array_map(
+            function($m) {
+                return $m['name'];
+            },
+            DeviceType::find()->orderBy('name')->all()
+        ));
+    }
 
     public function actionIndex()
     {

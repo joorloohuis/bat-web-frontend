@@ -3,10 +3,21 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\helpers\Json;
 use common\models\ModelNumber;
 
 class ModelNumberController extends \yii\web\Controller
 {
+
+    // list fetch for typeahead widgets
+    public function actionList() {
+        echo Json::encode(array_map(
+            function($m) {
+                return $m['value'];
+            },
+            ModelNumber::find()->orderBy('value')->all()
+        ));
+    }
 
     public function actionIndex()
     {

@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use \yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use common\models\Manufacturer;
 
 /**
  * This is the model class for table "model_number".
@@ -36,7 +37,6 @@ class ModelNumber extends ActiveRecord
             [['value', 'manufacturer_id'], 'required'],
             [['value'], 'string', 'max' => 255],
             [['manufacturer_id'], 'integer'],
-            [['manufacturer_id'], 'exist', 'targetClass' => Manufacturer::className(), 'targetAttribute' => 'id'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -69,4 +69,24 @@ class ModelNumber extends ActiveRecord
     {
         return $this->hasOne(Manufacturer::className(), ['id' => 'manufacturer_id']);
     }
+
+    public static function findOrCreateByValueAndManufacturer($value, $manufacturer_id)
+    {
+        if (!$value) {
+            return null;
+        }
+        $model_number = static::findOne(['value' => $value, 'manufacturer_id' => $manufacturer_id]);
+        if ($model_number) {
+            return $model_number;
+        }
+        if ($manufacturer_id) {
+            $manufacturer = Manufacturer::findOne(['id' => $manufacturer_id]);
+        }
+        $model_number = new static();
+        $model_number->value = $value;
+        $model_number->manufacturer_id = $manufacturer ? $manufacturer->id : null;
+        $model_number->save();
+        return $model_number;
+    }
+
 }

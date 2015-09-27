@@ -55,4 +55,20 @@ class Chipset extends ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public static function findOrCreateByValue($value)
+    {
+        if (!$value) {
+            return null;
+        }
+        $chipset = static::findOne(['value' => $value]);
+        if ($chipset) {
+            return $chipset;
+        }
+        $chipset = new static();
+        $chipset->value = $value;
+        $chipset->save();
+        return $chipset;
+    }
+
 }

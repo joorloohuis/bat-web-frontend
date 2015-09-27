@@ -24,7 +24,7 @@ $form = ActiveForm::begin([
   <div class="box-body">
     <div class="form-group">
       <?= $form->field($model, 'value') ?>
-      <?= $form->field($model, 'manufacturer_id')->dropDownList(ArrayHelper::map(Manufacturer::find()->orderBy('name')->all(), 'id', 'name')) ?>
+      <?= $form->field($model, 'manufacturer_id')->dropDownList(ArrayHelper::map(Manufacturer::find()->orderBy('name')->all(), 'id', 'name'), ['disabled' => true]) ?>
     </div>
     <div class="box-footer">
       <?= Button::widget(['label' => 'Save', 'options' => ['class' => 'btn btn-primary']]) ?>

@@ -74,4 +74,11 @@ class Job extends \yii\db\ActiveRecord
     {
         return $this->hasMany(JobStatus::className(), ['job_id' => 'id']);
     }
+
+    // TODO: don't delete jobs that are not pending or error
+    public function delete()
+    {
+        return parent::delete();
+    }
+
 }

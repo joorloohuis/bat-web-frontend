@@ -16,7 +16,6 @@ use yii\web\UploadedFile;
  * @property string $filename
  * @property string $filesize
  * @property string $checksum
- * @property string $uniqid
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $created_by
@@ -41,7 +40,7 @@ class Upload extends \yii\db\ActiveRecord
             [['filename'], 'required'],
             [['filesize', 'created_at', 'updated_at'], 'integer'],
             [['description'], 'string'],
-            [['filename', 'mimetype', 'checksum', 'uniqid', 'created_by', 'updated_by'], 'string', 'max' => 255]
+            [['filename', 'mimetype', 'checksum', 'created_by', 'updated_by'], 'string', 'max' => 255]
         ];
     }
 
@@ -69,7 +68,7 @@ class Upload extends \yii\db\ActiveRecord
             'filename' => 'Filename',
             'filesize' => 'File Size',
             'mimetype' => 'MIME Type',
-            'checksum' => 'Checksum',
+            'checksum' => 'SHA256 Checksum',
             'description' => 'Description',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -83,8 +82,7 @@ class Upload extends \yii\db\ActiveRecord
     {
         $upload = new static();
         $upload->mimetype = FileHelper::getMimeType($file->tempName);
-        $upload->checksum = sha1_file($file->tempName);
-        $upload->uniqid = uniqid();
+        $upload->checksum = hash_file('sha256', $file->tempName);
         $upload->filename = $file->getBaseName() . '.' . $file->getExtension();
         $upload->filesize = $file->size;
 
@@ -115,6 +113,8 @@ class Upload extends \yii\db\ActiveRecord
     {
         $filename = $this->getContainerDir() . '/' . $this->filename;
         if (is_writable($filename) && unlink($filename)) {
+            // silently fail removing container directory if not empty
+            rmdir($this->getContainerDir());
             return parent::delete();
         }
         return false;
@@ -123,8 +123,7 @@ class Upload extends \yii\db\ActiveRecord
     public function getContainerDir()
     {
         // reduce the number of files in a directory, use the checksum to create subdirs
-        // same file may be uploaded more than once, tack a uniqid onto the subdir
-        return Yii::$app->params['fileStorePath'] . '/' . $this->checksum . '/' . $this->uniqid;
+        return Yii::$app->params['fileStorePath'] . '/' . $this->checksum;
     }
 
     public function createContainerDir()

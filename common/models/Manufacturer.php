@@ -6,7 +6,6 @@ use Yii;
 use \yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
-
 /**
  * This is the model class for table "manufacturer".
  *
@@ -56,4 +55,20 @@ class Manufacturer extends ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public static function findOrCreateByName($name)
+    {
+        if (!$name) {
+            return null;
+        }
+        $manufacturer = static::findOne(['name' => $name]);
+        if ($manufacturer) {
+            return $manufacturer;
+        }
+        $manufacturer = new static();
+        $manufacturer->name = $name;
+        $manufacturer->save();
+        return $manufacturer;
+    }
+
 }

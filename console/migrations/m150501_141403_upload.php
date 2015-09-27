@@ -15,7 +15,7 @@ class m150501_141403_upload extends Migration
         $this->createTable('upload', [
             'id' => Schema::TYPE_PK,
             'filename' => Schema::TYPE_STRING . ' NOT NULL',
-            'filesize' => Schema::TYPE_BIGINT . ' NOT NULL'
+            'filesize' => Schema::TYPE_BIGINT . ' NOT NULL',
             'checksum' => Schema::TYPE_STRING . ' NOT NULL',
             'mimetype' => Schema::TYPE_STRING . ' NOT NULL',
             'description' => Schema::TYPE_TEXT . ' NOT NULL',

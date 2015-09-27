@@ -56,16 +56,20 @@ if (Yii::$app->user->can('listResources')) {
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'attribute' => 'device_type_id',
-                'value' => function ($model, $index, $widget) { return $model->deviceType ? $model->deviceType->name : ''; }
-            ],
-            [
                 'attribute' => 'manufacturer_id',
                 'value' => function ($model, $index, $widget) { return $model->manufacturer ? $model->manufacturer->name : ''; }
             ],
             [
                 'attribute' => 'model_number_id',
                 'value' => function ($model, $index, $widget) { return $model->modelNumber ? $model->modelNumber->value : ''; }
+            ],
+            [
+                'attribute' => 'device_type_id',
+                'value' => function ($model, $index, $widget) { return $model->deviceType ? $model->deviceType->name : ''; }
+            ],
+            [
+                'attribute' => 'chipset_id',
+                'value' => function ($model, $index, $widget) { return $model->chipset ? $model->chipset->value : ''; }
             ],
             [
                 'attribute' => 'upload_id',

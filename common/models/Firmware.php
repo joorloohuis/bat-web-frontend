@@ -52,7 +52,6 @@ class Firmware extends \yii\db\ActiveRecord
     {
         return [
             [['upload_id', 'manufacturer_id', 'model_number_id', 'device_type_id', 'odm_id', 'chipset_id', 'image_upload_id', 'created_at', 'updated_at'], 'integer'],
-//            [['created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
             [['download_url', 'notes'], 'string'],
             [['fcc_number', 'mac_address', 'created_by', 'updated_by'], 'string', 'max' => 255]
         ];
@@ -79,7 +78,7 @@ class Firmware extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'upload_id' => 'Upload',
+            'upload_id' => 'File',
             'manufacturer_id' => 'Manufacturer',
             'model_number_id' => 'Model Number',
             'device_type_id' => 'Device Type',
@@ -105,9 +104,38 @@ class Firmware extends \yii\db\ActiveRecord
         return $firmware;
     }
 
+    public function updateFromFirmwareForm($form)
+    {
+        if ($form['device_type']) {
+            $device_type = DeviceType::findOrCreateByName($form['device_type']);
+            $this->device_type_id = $device_type->id;
+        }
+        if ($form['manufacturer']) {
+            $manufacturer = Manufacturer::findOrCreateByName($form['manufacturer']);
+            $this->manufacturer_id = $manufacturer->id;
+        }
+        if ($form['odm']) {
+            $odm = Manufacturer::findOrCreateByName($form['odm']);
+            $this->odm_id = $odm->id;
+        }
+        if ($form['model_number']) {
+            $model_number = ModelNumber::findOrCreateByValueAndManufacturer($form['model_number'], $this->manufacturer_id);
+            $this->model_number_id = $model_number->id;
+        }
+        if ($form['chipset']) {
+            $chipset = Chipset::findOrCreateByValue($form['chipset']);
+            $this->chipset_id = $chipset->id;
+        }
+        $this->fcc_number = $form['fcc_number'];
+        $this->download_url = $form['download_url'];
+        $this->mac_address = $form['mac_address'];
+        $this->notes = $form['notes'];
+    }
+
+    // TODO: don't delete firmwares that have jobs that are not pending or error
     public function delete()
     {
-        if (!$this->getUpload()->one()->delete()) {
+        if (!$this->upload->delete()) {
             return false;
         }
         return parent::delete();

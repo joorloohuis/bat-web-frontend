@@ -56,4 +56,20 @@ class DeviceType extends ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    public static function findOrCreateByName($name)
+    {
+        if (!$name) {
+            return null;
+        }
+        $device_type = static::findOne(['name' => $name]);
+        if ($device_type) {
+            return $device_type;
+        }
+        $device_type = new static();
+        $device_type->name = $name;
+        $device_type->save();
+        return $device_type;
+    }
+
 }

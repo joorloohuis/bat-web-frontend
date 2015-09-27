@@ -3,10 +3,22 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\helpers\Json;
+use yii\db\Query;
 use common\models\Manufacturer;
 
 class ManufacturerController extends \yii\web\Controller
 {
+
+    // list fetch for typeahead widgets
+    public function actionList() {
+        echo Json::encode(array_map(
+            function($m) {
+                return $m['name'];
+            },
+            Manufacturer::find()->orderBy('name')->all()
+        ));
+    }
 
     public function actionIndex()
     {

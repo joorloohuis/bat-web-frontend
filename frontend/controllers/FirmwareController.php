@@ -7,6 +7,7 @@ use yii\web\UploadedFile;
 use common\models\Firmware;
 use common\models\Upload;
 use frontend\models\UploadForm;
+use frontend\models\FirmwareForm;
 
 class FirmwareController extends \yii\web\Controller
 {
@@ -44,7 +45,7 @@ class FirmwareController extends \yii\web\Controller
                     }
 
                     return $this->render('edit', [
-                        'firmware' => $firmware,
+                        'model' => FirmwareForm::createFromFirmware($firmware),
                     ]);
                 }
             }
@@ -65,17 +66,17 @@ class FirmwareController extends \yii\web\Controller
         }
 
         return $this->render('edit', [
-            'firmware' => $firmware,
+            'model' => FirmwareForm::createFromFirmware($firmware),
         ]);
     }
 
     public function actionSave()
     {
         if (Yii::$app->user->can('updateResource')) {
-            $post = Yii::$app->request->post('Firmware');
-            if ($post['id']) {
-                $model = Firmware::findOne(['id' => $post['id']]);
-                $model->attributes = $post;
+            $post = Yii::$app->request->post('FirmwareForm');
+            if ($post['firmware_id']) {
+                $model = Firmware::findOne(['id' => $post['firmware_id']]);
+                $model->updateFromFirmwareForm($post);
                 if ($model->validate()) {
                     if ($model->update()) {
                         Yii::$app->getSession()->setFlash('success', 'Firmware updated.');
