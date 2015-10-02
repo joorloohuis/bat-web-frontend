@@ -132,15 +132,6 @@ class Firmware extends \yii\db\ActiveRecord
         $this->notes = $form['notes'];
     }
 
-    // TODO: don't delete firmwares that have jobs that are not pending or error
-    public function delete()
-    {
-        if (!$this->upload->delete()) {
-            return false;
-        }
-        return parent::delete();
-    }
-
     /**
      *
      * @return \yii\db\ActiveQuery
