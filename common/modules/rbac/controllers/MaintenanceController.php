@@ -14,8 +14,9 @@ use common\models\User;
 class MaintenanceController extends Controller
 {
 
-    const LIST_FORMAT_HEADER = '%8s %-20s %-20s %7s';
-    const LIST_FORMAT_LINE   = '%8d %-20s %-20s %7s';
+    const LIST_FORMAT_HEADER = '| %8s | %-20s | %-20s | %7s |';
+    const LIST_FORMAT_LINE   = '| %8d | %-20s | %-20s | %7s |';
+    const LIST_FORMAT_SEP    = '+%10s+%22s+%22s+%9s+';
 
     /**
      * Alias for rbac/list
@@ -35,11 +36,15 @@ class MaintenanceController extends Controller
             ->orderBy('id')
             ->all();
         if (count($users)) {
+            $separator = sprintf(self::LIST_FORMAT_SEP.PHP_EOL, str_repeat('-', 10), str_repeat('-', 22), str_repeat('-', 22), str_repeat('-', 9));
+            echo $separator;
             printf(self::LIST_FORMAT_HEADER.PHP_EOL, 'id', 'username', 'role', 'status');
+            echo $separator;
             foreach ($users as $user) {
                 $roles = join(',', array_map(function($role) {return $role->name;}, $auth->getRolesByUser($user->id)));
                 printf(self::LIST_FORMAT_LINE.PHP_EOL, $user->id, $user->username, $roles, $this->statusMap[$user->status]);
             }
+            echo $separator;
         }
         return Controller::EXIT_CODE_NORMAL;
     }

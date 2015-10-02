@@ -13,8 +13,9 @@ use common\models\User;
   */
 class UserController extends Controller
 {
-    const LIST_FORMAT_HEADER = '%8s %-20s %7s %-30s %-40s';
-    const LIST_FORMAT_LINE   = '%8d %-20s %7s %-30s %-40s';
+    const LIST_FORMAT_HEADER = '| %8s | %-20s | %7s | %-30s | %-40s |';
+    const LIST_FORMAT_LINE   = '| %8d | %-20s | %7s | %-30s | %-40s |';
+    const LIST_FORMAT_SEP    = '+%10s+%22s+%9s+%32s+%42s+';
 
     /**
      * Alias for user/list
@@ -33,10 +34,14 @@ class UserController extends Controller
             ->orderBy('id')
             ->all();
         if (count($users)) {
+            $separator = sprintf(self::LIST_FORMAT_SEP.PHP_EOL, str_repeat('-', 10), str_repeat('-', 22), str_repeat('-', 9), str_repeat('-', 32), str_repeat('-', 42));
+            echo $separator;
             printf(self::LIST_FORMAT_HEADER.PHP_EOL, 'id', 'username', 'status', 'fullname', 'email');
+            echo $separator;
             foreach ($users as $user) {
                 printf(self::LIST_FORMAT_LINE.PHP_EOL, $user->id, $user->username, $this->statusMap[$user->status], $user->fullname, $user->email);
             }
+            echo $separator;
         }
         return Controller::EXIT_CODE_NORMAL;
     }
