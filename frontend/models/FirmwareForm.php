@@ -51,8 +51,8 @@ class FirmwareForm extends \yii\base\Model
     public static function createFromFirmware($firmware)
     {
         $form = new static();
-        $form->upload_name = $firmware->upload->filename;
-        $form->checksum = $firmware->upload->checksum;
+        $form->upload_name = isset($firmware->upload) ? $firmware->upload->filename : '';
+        $form->checksum = isset($firmware->upload) ? $firmware->upload->checksum : '';
         $form->firmware_id = $firmware->id;
         $form->manufacturer = isset($firmware->manufacturer) ? $firmware->manufacturer->name : '';
         $form->odm = isset($firmware->odm) ? $firmware->odm->name : '';

@@ -152,6 +152,26 @@ class Firmware extends \yii\db\ActiveRecord
     }
 
     /**
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function findByUpload(Upload $upload)
+    {
+        return Firmware::find()
+            ->where(['upload_id' => $upload->id]);
+    }
+
+    /**
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function findByUserAndUpload($id, Upload $upload)
+    {
+        return Firmware::find()
+            ->where(['created_by' => $id, 'upload_id' => $upload->id]);
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getChipset()

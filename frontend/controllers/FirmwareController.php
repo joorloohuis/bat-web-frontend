@@ -32,22 +32,24 @@ class FirmwareController extends \yii\web\Controller
                     Yii::$app->getSession()->setFlash('error', $file->error);
                     return $this->render('index');
                 }
-                $upload = Upload::createFromUploadedFile($file);
-                if ($upload->hasErrors()) {
-                    Yii::$app->getSession()->setFlash('error', $upload->getErrors());
-                    return $this->render('index');
-                }
-                else {
-                    $firmware = Firmware::createFromUpload($upload);
-                    if ($firmware->hasErrors()) {
-                        Yii::$app->getSession()->setFlash('error', $firmware->getErrors());
+                $upload = Upload::findByUploadedFile($file);
+                // TODO: if upload resource already exists for this file, edit existing firmware or create new, take ownership into account
+                if (!$upload) {
+                    $upload = Upload::createFromUploadedFile($file);
+                    if ($upload->hasErrors()) {
+                        Yii::$app->getSession()->setFlash('error', $upload->getErrors());
                         return $this->render('index');
                     }
-
-                    return $this->render('edit', [
-                        'model' => FirmwareForm::createFromFirmware($firmware),
-                    ]);
                 }
+                $firmware = Firmware::createFromUpload($upload);
+                if ($firmware->hasErrors()) {
+                    Yii::$app->getSession()->setFlash('error', $firmware->getErrors());
+                    return $this->render('index');
+                }
+
+                return $this->render('edit', [
+                    'model' => FirmwareForm::createFromFirmware($firmware),
+                ]);
             }
         }
         else {

@@ -77,6 +77,13 @@ class Upload extends \yii\db\ActiveRecord
         ];
     }
 
+    // find existing upload by file checksum
+    public static function findByUploadedFile(UploadedFile $file)
+    {
+        $checksum = hash_file('sha256', $file->tempName);
+        return static::findOne(['checksum' => $checksum]);
+    }
+
     // create upload model from uploaded file, store in assigned location
     public static function createFromUploadedFile(UploadedFile $file)
     {
