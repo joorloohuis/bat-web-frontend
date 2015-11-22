@@ -9,6 +9,10 @@ use yii\behaviors\BlameableBehavior;
 use yii\helpers\FileHelper;
 use yii\web\UploadedFile;
 
+// FIXME: removing upload detaches it from firmware
+// * use hard links to maintain separate names for the same data set?
+// * disable delete for files that have attached firmwares
+
 /**
  * This is the model class for table "upload".
  *

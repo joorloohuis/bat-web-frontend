@@ -12,6 +12,22 @@ use frontend\models\FirmwareForm;
 class FirmwareController extends \yii\web\Controller
 {
 
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index', 'upload', 'update', 'save', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         if (!Yii::$app->user->can('listResources')) {

@@ -9,6 +9,22 @@ use common\models\ModelNumber;
 class ModelNumberController extends \yii\web\Controller
 {
 
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['list', 'index', 'update', 'save'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     // list fetch for typeahead widgets
     public function actionList() {
         echo Json::encode(array_map(

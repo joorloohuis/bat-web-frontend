@@ -4,9 +4,9 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\helpers\Json;
-use common\models\DeviceType;
+use common\models\Job;
 
-class DeviceTypeController extends \yii\web\Controller
+class JobController extends \yii\web\Controller
 {
 
     public function behaviors()
@@ -14,7 +14,7 @@ class DeviceTypeController extends \yii\web\Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['list', 'index', 'update', 'save'],
+                'only' => ['index', 'update', 'save'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -23,16 +23,6 @@ class DeviceTypeController extends \yii\web\Controller
                 ],
             ],
         ];
-    }
-
-    // list fetch for typeahead widgets
-    public function actionList() {
-        echo Json::encode(array_map(
-            function($m) {
-                return $m['name'];
-            },
-            DeviceType::find()->orderBy('name')->all()
-        ));
     }
 
     public function actionIndex()
@@ -45,8 +35,8 @@ class DeviceTypeController extends \yii\web\Controller
 
     public function actionUpdate()
     {
-        if (!$model = DeviceType::findOne(['id' => Yii::$app->request->get('id')])) {
-            Yii::$app->getSession()->setFlash('error', 'No such device type.');
+        if (!$model = Job::findOne(['id' => Yii::$app->request->get('id')])) {
+            Yii::$app->getSession()->setFlash('error', 'No such job.');
             return $this->render('index');
         }
 
@@ -58,15 +48,15 @@ class DeviceTypeController extends \yii\web\Controller
     public function actionSave()
     {
         if (Yii::$app->user->can('updateResource')) {
-            $post = Yii::$app->request->post('DeviceType');
+            $post = Yii::$app->request->post('Job');
             if ($post['id']) {
-                $model = DeviceType::findOne(['id' => $post['id']]);
+                $model = Job::findOne(['id' => $post['id']]);
                 $model->attributes = $post;
                 if ($model->validate()) {
                     if ($model->update()) {
-                        Yii::$app->getSession()->setFlash('success', 'Device type #'.$post['id'].' updated.');
+                        Yii::$app->getSession()->setFlash('success', 'Job #'.$post['id'].' updated.');
                     } else {
-                        Yii::$app->getSession()->setFlash('error', 'Failed to update device type #'.$post['id'].'.');
+                        Yii::$app->getSession()->setFlash('error', 'Failed to update job #'.$post['id'].'.');
                     }
                 }
             }

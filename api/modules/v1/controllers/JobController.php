@@ -20,9 +20,20 @@ class JobController extends ActiveController
         return $actions;
     }
 
-    public function actionIndex()
+    /**
+     * claim and return one scanning task
+     */
+    public function actionClaim()
     {
-        return ['patat' => 'friet'];
+        return [];
+    }
+
+    /**
+     *
+     */
+    public function actionUpdate()
+    {
+
     }
 
 }

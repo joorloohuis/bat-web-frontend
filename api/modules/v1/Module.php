@@ -18,7 +18,7 @@ class Module extends \yii\base\Module
             'authMethods' => [
                 RequestHeaderAuth::className(),
                 QueryParamAuth::className(),
-                HttpBasicAuth::className(),
+                // HttpBasicAuth::className(),
             ],
         ];
         return $behaviors;

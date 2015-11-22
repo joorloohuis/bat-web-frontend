@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "job".
@@ -36,9 +38,22 @@ class Job extends \yii\db\ActiveRecord
     {
         return [
             [['firmware_id', 'created_at', 'updated_at'], 'integer'],
-            [['status', 'report', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
             [['report'], 'string'],
             [['status', 'created_by', 'updated_by'], 'string', 'max' => 255]
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            [
+                'class' => BlameableBehavior::className(),
+                'value' => function($event) {
+                    $user = Yii::$app->get('user', false);
+                    return $user && !$user->isGuest ? $user->identity->username : null;
+                },
+            ],
         ];
     }
 
@@ -57,6 +72,16 @@ class Job extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    /**
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function findByUser($id)
+    {
+        return Firmware::find()
+            ->where(['created_by' => $id]);
     }
 
     /**
