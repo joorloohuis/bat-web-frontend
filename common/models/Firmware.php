@@ -11,6 +11,7 @@ use yii\behaviors\BlameableBehavior;
  * This is the model class for table "firmware".
  *
  * @property integer $id
+ * @property string $description
  * @property integer $upload_id
  * @property integer $manufacturer_id
  * @property integer $model_number_id
@@ -53,7 +54,7 @@ class Firmware extends \yii\db\ActiveRecord
         return [
             [['upload_id', 'manufacturer_id', 'model_number_id', 'device_type_id', 'odm_id', 'chipset_id', 'image_upload_id', 'created_at', 'updated_at'], 'integer'],
             [['download_url', 'notes'], 'string'],
-            [['fcc_number', 'mac_address', 'created_by', 'updated_by'], 'string', 'max' => 255]
+            [['description', 'fcc_number', 'mac_address', 'created_by', 'updated_by'], 'string', 'max' => 255]
         ];
     }
 
@@ -78,6 +79,7 @@ class Firmware extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'description' => 'Description',
             'upload_id' => 'File',
             'manufacturer_id' => 'Manufacturer',
             'model_number_id' => 'Model Number',
@@ -106,6 +108,7 @@ class Firmware extends \yii\db\ActiveRecord
 
     public function updateFromFirmwareForm($form)
     {
+        $this->description = $form['description'];
         if ($form['device_type']) {
             $device_type = DeviceType::findOrCreateByName($form['device_type']);
             $this->device_type_id = $device_type->id;

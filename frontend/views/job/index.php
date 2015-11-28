@@ -25,6 +25,13 @@ if (Yii::$app->user->can('listResources')) {
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
+                'attribute' => 'firmware',
+                'value' => function ($model, $index, $widget) { return $model->firmware && $model->firmware->description ? $model->firmware->description : ''; }
+            ],
+            [
+                'attribute' => 'status',
+            ],
+            [
                 'attribute' => 'created_at',
                 'format' => ['datetime', 'php:Y-m-d H:i:s']
             ],

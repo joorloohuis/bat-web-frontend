@@ -11,7 +11,7 @@ use yii\behaviors\BlameableBehavior;
  *
  * @property integer $id
  * @property integer $firmware_id
- * @property string $status
+ * @property integer $scanner_id
  * @property string $report
  * @property integer $created_at
  * @property integer $updated_at
@@ -19,6 +19,7 @@ use yii\behaviors\BlameableBehavior;
  * @property string $updated_by
  *
  * @property Firmware $firmware
+ * @property Scanner $scanner
  * @property JobStatus[] $jobStatuses
  */
 class Job extends \yii\db\ActiveRecord
@@ -37,9 +38,9 @@ class Job extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['firmware_id', 'created_at', 'updated_at'], 'integer'],
+            [['firmware_id', 'scanner_id', 'created_at', 'updated_at'], 'integer'],
             [['report'], 'string'],
-            [['status', 'created_by', 'updated_by'], 'string', 'max' => 255]
+            [['created_by', 'updated_by'], 'string', 'max' => 255]
         ];
     }
 
@@ -65,6 +66,7 @@ class Job extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'firmware_id' => 'Firmware ID',
+            'scanner_id' => 'Scanner ID',
             'status' => 'Status',
             'report' => 'Report',
             'created_at' => 'Created At',
@@ -80,7 +82,7 @@ class Job extends \yii\db\ActiveRecord
      */
     public function findByUser($id)
     {
-        return Firmware::find()
+        return Job::find()
             ->where(['created_by' => $id]);
     }
 
@@ -98,6 +100,14 @@ class Job extends \yii\db\ActiveRecord
     public function getJobStatuses()
     {
         return $this->hasMany(JobStatus::className(), ['job_id' => 'id']);
+    }
+
+    /**
+     * @return \app\model\JobStatus
+     */
+    public function getLatestJobStatus()
+    {
+        return JobStatus::find()->where(['job_id' => $this->id])->orderBy('id DESC')->one();
     }
 
     // TODO: don't delete jobs that are not pending or error

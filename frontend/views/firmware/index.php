@@ -56,6 +56,9 @@ if (Yii::$app->user->can('listResources')) {
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
+                'attribute' => 'description',
+            ],
+            [
                 'attribute' => 'manufacturer_id',
                 'value' => function ($model, $index, $widget) { return $model->manufacturer ? $model->manufacturer->name : ''; }
             ],

@@ -4,6 +4,7 @@ namespace frontend\models;
 
 class FirmwareForm extends \yii\base\Model
 {
+    public $description;
     public $firmware_id;
     public $upload_name;
     public $checksum;
@@ -21,7 +22,7 @@ class FirmwareForm extends \yii\base\Model
     public function rules()
     {
         return [
-            [['manufacturer', 'model_number', 'device_type', 'odm', 'chipset', 'fcc_number', 'download_url', 'mac_address', 'notes'], 'string'],
+            [['description', 'manufacturer', 'model_number', 'device_type', 'odm', 'chipset', 'fcc_number', 'download_url', 'mac_address', 'notes'], 'string'],
             [['imagefile'], 'file'],
             [['manufacturer'], 'required']
         ];
@@ -33,6 +34,7 @@ class FirmwareForm extends \yii\base\Model
     public function attributeLabels()
     {
         return [
+            'description' => 'Description',
             'upload_name' => 'File',
             'checksum' => 'SHA256 Checksum',
             'manufacturer' => 'Manufacturer',
@@ -51,6 +53,7 @@ class FirmwareForm extends \yii\base\Model
     public static function createFromFirmware($firmware)
     {
         $form = new static();
+        $form->description = $firmware->description;
         $form->upload_name = isset($firmware->upload) ? $firmware->upload->filename : '';
         $form->checksum = isset($firmware->upload) ? $firmware->upload->checksum : '';
         $form->firmware_id = $firmware->id;

@@ -30,6 +30,7 @@ $form = ActiveForm::begin([
     <div class="form-group">
       <?= $form->field($model, 'upload_name')->textInput(['readonly' => true]) ?>
       <?= $form->field($model, 'checksum')->textInput(['readonly' => true]) ?>
+      <?= $form->field($model, 'description')->textInput() ?>
       <?= $form->field($model, 'device_type')->widget(Typeahead::classname(), [
         'options' => ['placeholder' => 'Filter as you type ...'],
         'pluginOptions' => ['highlight' => true],
