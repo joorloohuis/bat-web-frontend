@@ -25,6 +25,7 @@ $form = ActiveForm::begin([
     </div>
     <div class="box-footer">
       <?= Button::widget(['label' => 'Save', 'options' => ['class' => 'btn btn-primary']]) ?>
+      <?= Html::a('Cancel', Yii::$app->request->referrer, ['class' => 'btn btn-default']); ?>
     </div>
   </div>
 <?php

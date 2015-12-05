@@ -1,5 +1,6 @@
 <?php
 use Yii;
+use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 use common\models\Firmware;
@@ -87,7 +88,36 @@ if (Yii::$app->user->can('listResources')) {
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update} {delete}'
+                'template' => '{update} {delete} {scan}',
+                'buttons' => [
+                    'delete' => function ($url, $model, $key) {
+                        if ($model->canDelete()) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', [
+                                '//firmware/delete',
+                                'id' => $model->id
+                            ], [
+                                'data-pjax' => 0,
+                                'data-method' => 'post',
+                                'data-confirm' => 'Are you sure you want to delete this firmware and all related data?',
+                                'aria-label' => "Delete",
+                                'title' => 'Delete',
+                            ]);
+                        }
+                        return '<span class="glyphicon glyphicon-trash text-muted"></span>';
+                    },
+                    'scan' => function ($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-tasks"></span>', [
+                            '//job/create',
+                            'firmware_id' => $model->id
+                        ], [
+                            'data-pjax' => 0,
+                            'data-method' => 'post',
+                            'data-confirm' => 'Are you sure you want to scan this firmware?',
+                            'aria-label' => "Scan",
+                            'title' => 'Scan',
+                        ]);
+                    },
+                ]
             ],
         ],
     ]);

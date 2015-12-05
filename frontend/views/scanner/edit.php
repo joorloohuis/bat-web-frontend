@@ -5,16 +5,16 @@ use yii\bootstrap\Button;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \common\models\Manufacturer */
+/* @var $model \common\models\Scanner */
 
-$this->title = 'Edit manufacturer';
-$this->params['breadcrumbs'][] = ['label' => 'Manufacturers', 'url' => '/manufacturer'];
+$this->title = 'Edit scanner';
+$this->params['breadcrumbs'][] = ['label' => 'Scanners', 'url' => '/scanner'];
 $this->params['breadcrumbs'][] = 'Edit';
 ?>
 <div class="box">
 <?php
 $form = ActiveForm::begin([
-    'id' => 'edit-manufacturer-form',
+    'id' => 'edit-scanner-form',
     'action' => 'save',
 ]);
 ?>
@@ -22,6 +22,7 @@ $form = ActiveForm::begin([
   <div class="box-body">
     <div class="form-group">
       <?= $form->field($model, 'name') ?>
+      <?= $form->field($model, 'description') ?>
     </div>
     <div class="box-footer">
       <?= Button::widget(['label' => 'Save', 'options' => ['class' => 'btn btn-primary']]) ?>

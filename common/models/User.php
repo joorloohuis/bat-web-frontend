@@ -85,6 +85,16 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Finds users by scanner id
+     *
+     * @param int $scannerId
+     */
+    public static function findAllByScannerId($scannerId)
+    {
+        return static::findAll(['scanner_id' => $scannerId, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
      * Finds user by password reset token
      *
      * @param string $token password reset token

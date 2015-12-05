@@ -220,4 +220,19 @@ class Firmware extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Upload::className(), ['id' => 'upload_id']);
     }
+
+    public function canDelete()
+    {
+        return true;
+    }
+
+    // TODO: check for existing scans
+    public function delete()
+    {
+        if ($this->canDelete()) {
+            return parent::delete();
+        }
+        return false;
+    }
+
 }

@@ -150,6 +150,11 @@ AppAsset::register($this);
                             'url' => ['/model-number/index'],
                             'active' => (Yii::$app->controller->id == 'model-number'),
                         ],
+                        [
+                            'label' => 'Scanners',
+                            'url' => ['/scanner/index'],
+                            'active' => (Yii::$app->controller->id == 'scanner'),
+                        ],
                     ]);
                 }
             }

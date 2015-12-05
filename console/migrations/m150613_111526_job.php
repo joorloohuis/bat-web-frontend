@@ -17,6 +17,7 @@ class m150613_111526_job extends Migration
             'firmware_id' => Schema::TYPE_INTEGER,
             'status' => Schema::TYPE_STRING . ' NOT NULL',
             'report' => Schema::TYPE_TEXT . ' NOT NULL',
+            'report_url' => Schema::TYPE_TEXT . ' NOT NULL',
             'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
             'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
             'created_by' => Schema::TYPE_STRING . ' NOT NULL',

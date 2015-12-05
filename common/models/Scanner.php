@@ -3,38 +3,27 @@
 namespace common\models;
 
 use Yii;
+use \yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 
 /**
- * This is the model class for table "job_status".
+ * This is the model class for table "scanner".
  *
  * @property integer $id
- * @property integer $job_id
- * @property string $short_status
- * @property string $full_status
+ * @property string $name
+ * @property string $description
  * @property integer $created_at
  * @property integer $updated_at
- * @property string $created_by
- * @property string $updated_by
- *
- * @property Job $job
  */
-class JobStatus extends \yii\db\ActiveRecord
+class Scanner extends ActiveRecord
 {
-    const INIT    = 'init';
-    const PENDING = 'pending';
-    const CLAIMED = 'claimed';
-    const ACTIVE  = 'active';
-    const DONE    = 'done';
-    const ERROR   = 'error';
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'job_status';
+        return 'scanner';
     }
 
     /**
@@ -43,10 +32,9 @@ class JobStatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['job_id', 'created_at', 'updated_at'], 'integer'],
-            [['short_status'], 'required'],
-            [['full_status'], 'string'],
-            [['short_status', 'created_by', 'updated_by'], 'string', 'max' => 255]
+            [['name'], 'required'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['name', 'description'], 'string', 'max' => 255]
         ];
     }
 
@@ -71,9 +59,8 @@ class JobStatus extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'job_id' => 'Job ID',
-            'short_status' => 'Short Status',
-            'full_status' => 'Full Status',
+            'name' => 'Name',
+            'description' => 'Description',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -81,16 +68,4 @@ class JobStatus extends \yii\db\ActiveRecord
         ];
     }
 
-    public function __toString()
-    {
-        return $this->short_status;
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getJob()
-    {
-        return $this->hasOne(Job::className(), ['id' => 'job_id']);
-    }
 }
