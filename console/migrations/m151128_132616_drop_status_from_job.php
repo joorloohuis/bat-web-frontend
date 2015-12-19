@@ -13,7 +13,7 @@ class m151128_132616_drop_status_from_job extends Migration
 
     public function down()
     {
-        $this->addColumn('job', 'status', Schema::TYPE_STRING . ' NOT NULL AFTER scanner_id');
+        $this->addColumn('job', 'status', Schema::TYPE_STRING . ' NOT NULL');
         return true;
     }
 }
