@@ -42,7 +42,6 @@ class Job extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['scanner_id'], 'required'],
             [['firmware_id', 'scanner_id', 'created_at', 'updated_at', 'claimed_at'], 'integer'],
             [['report', 'report_url'], 'string'],
             [['description', 'created_by', 'updated_by', 'claimed_by'], 'string', 'max' => 255]
@@ -147,11 +146,11 @@ class Job extends \yii\db\ActiveRecord
 
     public function canReset()
     {
-        return !in_array($this->getCurrentStatus(), [JobStatus::INIT, JobStatus::CLAIMED, JobStatus::ACTIVE]);
+        return !in_array($this->getCurrentStatus(), [JobStatus::INIT, /*JobStatus::CLAIMED, */JobStatus::ACTIVE]);
     }
 
     /**
-     * Reset a job to initial state, so it won't be claimed and the history is cleared
+     * Reset a job to initial state, so it's no longer claimed and the history is cleared
      */
     public function reset()
     {
@@ -159,6 +158,7 @@ class Job extends \yii\db\ActiveRecord
             $this->report = null;
             $this->claimed_at = null;
             $this->claimed_by = null;
+            $this->claim_id = null;
             JobStatus::deleteAll(['job_id' => $this->id]);
             $this->setCurrentStatus(JobStatus::INIT);
             return true;

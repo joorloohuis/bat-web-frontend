@@ -25,7 +25,7 @@ $form = ActiveForm::begin([
     <div class="form-group">
       <?= $form->field($model->firmware, 'description')->label('Firmware')->textInput(['readonly' => true]) ?>
       <?= $form->field($model, 'description')->textInput() ?>
-      <?= $form->field($model, 'scanner_id')->dropdownList(Scanner::find()->select(['name', 'id'])->indexBy('id')->column()); ?>
+      <?= $form->field($model, 'scanner_id')->dropdownList(Scanner::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt'=>'Select scanner']); ?>
     </div>
     <div class="box-footer">
       <?= Button::widget(['label' => 'Save', 'options' => ['class' => 'btn btn-primary']]) ?>

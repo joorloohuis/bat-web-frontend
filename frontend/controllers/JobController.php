@@ -91,9 +91,6 @@ class JobController extends \yii\web\Controller
                 $model->attributes = $post;
                 if ($model->validate()) {
                     if ($model->update()) {
-                        if ($model->canSchedule()) {
-                            $model->schedule();
-                        }
                         Yii::$app->getSession()->setFlash('success', 'Job #'.$post['id'].' updated.');
                     } else {
                         Yii::$app->getSession()->setFlash('error', 'Failed to update job #'.$post['id'].'.');
@@ -132,6 +129,7 @@ class JobController extends \yii\web\Controller
         if (Yii::$app->user->can('updateResource')) {
             $model = Job::findOne(['id' => Yii::$app->request->get('id')]);
             if ($model->schedule()) {
+                $model->save();
                 Yii::$app->getSession()->setFlash('success', 'Job scheduled.');
             }
             else {
@@ -149,6 +147,7 @@ class JobController extends \yii\web\Controller
         if (Yii::$app->user->can('updateResource')) {
             $model = Job::findOne(['id' => Yii::$app->request->get('id')]);
             if ($model->reset()) {
+                $model->save();
                 Yii::$app->getSession()->setFlash('success', 'Job reset.');
             }
             else {

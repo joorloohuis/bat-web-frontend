@@ -52,7 +52,7 @@ if (Yii::$app->user->can('listResources')) {
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update} {delete} {schedule} {reset} {view}',
+                'template' => '{update} {delete} {view} {schedule} {reset}',
                 'buttons' => [
                     'delete' => function ($url, $model, $key) {
                         if ($model->canDelete()) {
