@@ -1,6 +1,6 @@
 <?php
 
-namespace api\models;
+namespace api\modules\v1\models;
 
 use Yii;
 use yii\db\Query;
@@ -28,9 +28,26 @@ class Job extends \common\models\Job
             'report_url',
             'firmware' => function($model) {
                 $firmware = $model->firmware;
+                if (!$firmware)
+                    return [];
+                $upload = $firmware->upload;
                 return [
                     'name' => $firmware->description,
-                    'upload' => $firmware->upload,
+                    'manufacturer' => $firmware->manufacturer->name,
+                    'model_number' => $firmware->modelNumber->value,
+                    'device_type' => $firmware->deviceType->name,
+                    'chipset' => $firmware->chipset->value,
+                    'uri' => $upload->getDownloadUri(),
+                    'filesize' => $upload->filesize,
+                    'sha256' => $upload->checksum,
+                    'mimetype' => $upload->mimetype,
+                ];
+            },
+            'contact' => function($model) {
+                $contact = User::findByUsername($model->created_by);
+                return [
+                    'name' => $contact->fullname,
+                    'email' => $contact->email,
                 ];
             },
         ];
@@ -70,8 +87,8 @@ class Job extends \common\models\Job
     {
         $count = min(self::MAX_CLAIM_NUMBER, max(1, (int) $count));
         // claim all required jobs in a single query to avoid race conditions
-        // the Yii2 query builder apparently doesn't support updates with joins on subqueries,
-        // so we have to roll our own
+        // FIXME: looks like the Yii2 query builder apparently doesn't support updates with joins on subqueries
+        // look into using a view to join on as a workaround
         $updateSql =<<<SQL
             UPDATE job INNER JOIN (
                 SELECT j.id FROM job j

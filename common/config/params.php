@@ -1,8 +1,12 @@
 <?php
 return [
+    // create a file params-local.php in the same directory as this file
+    // and add your overrides there
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
-    // file storage path
-    'fileStorePath' => '/home/joor/projects/uploads'
+    // storage path in local filesystem
+    'fileStorePath' => '',
+    // base location of file storage using network protocol
+    'fileStoreUri' => '',
 ];

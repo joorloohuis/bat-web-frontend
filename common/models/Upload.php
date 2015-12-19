@@ -142,4 +142,8 @@ class Upload extends \yii\db\ActiveRecord
         return FileHelper::createDirectory($this->getContainerDir(), 0755, true);
     }
 
+    public function getDownloadUri()
+    {
+        return Yii::$app->params['fileStoreUri'] . '/' . $this->checksum . '/' . $this->filename;
+    }
 }

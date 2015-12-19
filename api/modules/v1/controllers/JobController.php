@@ -8,9 +8,10 @@ use yii\web\Response;
 use yii\web\ForbiddenHttpException;
 use yii\web\BadRequestHttpException;
 use yii\rest\ActiveController;
-use api\models\Job;
+use api\modules\v1\models\Job;
 use common\models\JobStatus;
 
+// FIXME: replace ad hoc input validation with scenario/rule based validation
 class JobController extends ActiveController
 {
     public $modelClass = 'api\models\Job';
@@ -90,7 +91,6 @@ class JobController extends ActiveController
             throw new BadRequestHttpException('Job not accepting updates.');
         }
 
-        // TODO: validate input
         $update = Yii::$app->getRequest()->getBodyParams();
         if (!isset($update['status'])) {
            throw new BadRequestHttpException('Missing status parameter.');
@@ -125,19 +125,6 @@ class JobController extends ActiveController
             }
         }
         return $filteredParams;
-    }
-
-    protected function prepareDataProvider()
-    {
-        // only select jobs for scanner assigned to this user
-        $user = Yii::$app->get('user', false);
-        $scannerId = $user && !$user->isGuest ? $user->identity->scanner_id : null;
-        if (!$scannerId) {
-           throw new BadRequestHttpException('API user not configured correctly.');
-        }
-        return new ActiveDataProvider([
-            'query' => Job::find()->where(['scanner_id' => $scannerId]),
-        ]);
     }
 
 }

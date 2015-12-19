@@ -20,9 +20,12 @@ $this->params['breadcrumbs'][] = 'View';
       <dt>Scanner</dt>
       <dd><?= $model->scanner ? $model->scanner->name : '' ?><br /><small><?= $model->scanner ? $model->scanner->description : '' ?></small></dd>
       <dt>Current status</dt>
-      <dd><?= $model->getCurrentStatus() ?></dd>
+      <dd><?= $model->getCurrentStatus() ?> (<?= date('c', $model->getCurrentStatus()->created_at) ?>)</dd>
     </dl>
   </div>
   <div class="box-body">
-  </div>
+  <h2>Report</h2>
+  <div>Download: <?= $model->report_url ? Html::a('full report', $model->report_url, ['target' => '_blank']) : 'not available' ?></div>
+  <h3>Summary</h3>
+  <div><?= $model->report_url ? nl2br($model->report) : '' ?></div>
 </div>
