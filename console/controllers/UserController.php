@@ -53,7 +53,7 @@ class UserController extends Controller
      * @param string $fullname human readable name
      * @param string $email email address
      */
-    public function actionAdd($username, $password, $fullname = '', $email = '') {
+    public function actionAdd($username, $password = '', $fullname = '', $email = '') {
         $user = User::findOne(['username' => $username]);
         if ($user) {
             $this->showError('A user with login name ' . $username . ' already exists.');
@@ -63,8 +63,10 @@ class UserController extends Controller
         $user->username = $username;
         $user->fullname = $fullname;
         $user->email = $email;
-        $user->setPassword($password);
-        $user->generateAuthKey();
+        if ($password) {
+          $user->setPassword($password);
+          $user->generateAuthKey();
+        }
         if ($user->save()) {
             return Controller::EXIT_CODE_NORMAL;
         }
@@ -84,6 +86,24 @@ class UserController extends Controller
         }
         $user->setPassword($password);
         $user->generateAuthKey();
+        if ($user->save()) {
+            return Controller::EXIT_CODE_NORMAL;
+        }
+        return Controller::EXIT_CODE_ERROR;
+    }
+
+    /**
+     * Set an access token.
+     * @param string $username login name
+     * @param string $token access token
+     */
+    public function actionAccessToken($username, $token) {
+        $user = User::findOne(['username' => $username]);
+        if (!$user) {
+            $this->showError('No user with login name ' . $username . '.');
+            return Controller::EXIT_CODE_ERROR;
+        }
+        $user->auth_token = $token;
         if ($user->save()) {
             return Controller::EXIT_CODE_NORMAL;
         }

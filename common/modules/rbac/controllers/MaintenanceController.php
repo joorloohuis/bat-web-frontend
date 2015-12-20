@@ -88,8 +88,14 @@ class MaintenanceController extends Controller
      *
      */
     public function actionAssign($uid, $roleName) {
-        if (!$user = User::findOne($uid)) {
-            $this->showError('No user with id ' . $uid . '.');
+        if (intval($uid)) {
+            if (!$user = User::findOne($uid)) {
+                $this->showError('No user with id ' . $uid . '.');
+                return Controller::EXIT_CODE_ERROR;
+            }
+        }
+        elseif (!$user = User::findByUsername($uid)) {
+            $this->showError('No user with username ' . $uid . '.');
             return Controller::EXIT_CODE_ERROR;
         }
         $auth = Yii::$app->authManager;
@@ -98,9 +104,9 @@ class MaintenanceController extends Controller
             return Controller::EXIT_CODE_ERROR;
         }
 
-        $roles = $auth->getRolesByUser($uid);
+        $roles = $auth->getRolesByUser($user->id);
         if (!array_key_exists($roleName, $roles)) {
-            $auth->assign($role, $uid);
+            $auth->assign($role, $user->id);
         }
         return Controller::EXIT_CODE_NORMAL;
     }
@@ -111,8 +117,14 @@ class MaintenanceController extends Controller
      *
      */
     public function actionUnassign($uid, $roleName = null) {
-        if (!$user = User::findOne($uid)) {
-            $this->showError('No user with id ' . $uid . '.');
+        if (intval($uid)) {
+            if (!$user = User::findOne($uid)) {
+                $this->showError('No user with id ' . $uid . '.');
+                return Controller::EXIT_CODE_ERROR;
+            }
+        }
+        elseif (!$user = User::findByUsername($uid)) {
+            $this->showError('No user with username ' . $uid . '.');
             return Controller::EXIT_CODE_ERROR;
         }
         $auth = Yii::$app->authManager;
@@ -120,13 +132,13 @@ class MaintenanceController extends Controller
             $this->showError('No role with name ' . $roleName . '.');
             return Controller::EXIT_CODE_ERROR;
         }
-        $roles = $auth->getRolesByUser($uid);
+        $roles = $auth->getRolesByUser($user->id);
         if ($roleName) {
-            $auth->revoke($role, $uid);
+            $auth->revoke($role, $user->id);
         }
         else {
             foreach ($roles as $revokeRole) {
-                $auth->revoke($revokeRole, $uid);
+                $auth->revoke($revokeRole, $user->id);
             }
         }
     }
