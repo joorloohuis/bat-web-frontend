@@ -14,9 +14,9 @@ class m150501_125347_chipset extends Migration
 
         $this->createTable('chipset', [
             'id' => Schema::TYPE_PK,
-            'value' => Schema::TYPE_STRING . ' NOT NULL',
-            'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'value' => Schema::TYPE_STRING,
+            'created_at' => Schema::TYPE_INTEGER,
+            'updated_at' => Schema::TYPE_INTEGER,
         ], $tableOptions);
     }
 

@@ -7,8 +7,8 @@ class m151205_135005_update_job_schema extends Migration
 {
     public function up()
     {
-        $this->addColumn('job', 'claimed_by', Schema::TYPE_STRING . ' NOT NULL');
-        $this->addColumn('job', 'claimed_at', Schema::TYPE_INTEGER . ' NOT NULL');
+        $this->addColumn('job', 'claimed_by', Schema::TYPE_STRING);
+        $this->addColumn('job', 'claimed_at', Schema::TYPE_INTEGER);
         return true;
     }
 

@@ -14,15 +14,15 @@ class m150501_141403_upload extends Migration
 
         $this->createTable('upload', [
             'id' => Schema::TYPE_PK,
-            'filename' => Schema::TYPE_STRING . ' NOT NULL',
-            'filesize' => Schema::TYPE_BIGINT . ' NOT NULL',
-            'checksum' => Schema::TYPE_STRING . ' NOT NULL',
-            'mimetype' => Schema::TYPE_STRING . ' NOT NULL',
-            'description' => Schema::TYPE_TEXT . ' NOT NULL',
-            'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'created_by' => Schema::TYPE_STRING . ' NOT NULL',
-            'updated_by' => Schema::TYPE_STRING . ' NOT NULL',
+            'filename' => Schema::TYPE_STRING,
+            'filesize' => Schema::TYPE_BIGINT,
+            'checksum' => Schema::TYPE_STRING,
+            'mimetype' => Schema::TYPE_STRING,
+            'description' => Schema::TYPE_TEXT,
+            'created_at' => Schema::TYPE_INTEGER,
+            'updated_at' => Schema::TYPE_INTEGER,
+            'created_by' => Schema::TYPE_STRING,
+            'updated_by' => Schema::TYPE_STRING,
         ], $tableOptions);
     }
 

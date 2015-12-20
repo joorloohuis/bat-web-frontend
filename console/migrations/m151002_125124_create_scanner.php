@@ -14,14 +14,14 @@ class m151002_125124_create_scanner extends Migration
 
         $this->createTable('scanner', [
             'id' => Schema::TYPE_PK,
-            'name' => Schema::TYPE_STRING . ' NOT NULL',
-            'description' => Schema::TYPE_STRING . ' NOT NULL',
-            'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'created_by' => Schema::TYPE_STRING . ' NOT NULL',
-            'updated_by' => Schema::TYPE_STRING . ' NOT NULL',
+            'name' => Schema::TYPE_STRING,
+            'description' => Schema::TYPE_STRING,
+            'created_at' => Schema::TYPE_INTEGER,
+            'updated_at' => Schema::TYPE_INTEGER,
+            'created_by' => Schema::TYPE_STRING,
+            'updated_by' => Schema::TYPE_STRING,
         ], $tableOptions);
-        $this->addColumn('{{%user}}', 'scanner_id', Schema::TYPE_INTEGER . ' NOT NULL');
+        $this->addColumn('{{%user}}', 'scanner_id', Schema::TYPE_INTEGER);
         $this->createIndex('idx_scanner', 'user', 'scanner_id');
     }
 
@@ -30,7 +30,7 @@ class m151002_125124_create_scanner extends Migration
         $this->dropColumn('{{%user}}', 'scanner_id');
         $this->dropTable('scanner');
 
-        return false;
+        return true;
     }
 
 }

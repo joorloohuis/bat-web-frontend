@@ -14,10 +14,10 @@ class m150501_113912_modelnumber extends Migration
 
         $this->createTable('model_number', [
             'id' => Schema::TYPE_PK,
-            'value' => Schema::TYPE_STRING . ' NOT NULL',
+            'value' => Schema::TYPE_STRING,
             'manufacturer_id' => Schema::TYPE_INTEGER,
-            'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'created_at' => Schema::TYPE_INTEGER,
+            'updated_at' => Schema::TYPE_INTEGER,
         ], $tableOptions);
         $this->addForeignKey('fk_model_number_manufacturer', 'model_number', 'manufacturer_id', 'manufacturer', 'id', 'SET NULL', 'NO ACTION');
     }

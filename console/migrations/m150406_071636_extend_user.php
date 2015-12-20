@@ -7,7 +7,7 @@ class m150406_071636_extend_user extends Migration
 {
     public function up()
     {
-        $this->addColumn('{{%user}}', 'fullname', Schema::TYPE_STRING . ' NOT NULL');
+        $this->addColumn('{{%user}}', 'fullname', Schema::TYPE_STRING);
         return true;
     }
 

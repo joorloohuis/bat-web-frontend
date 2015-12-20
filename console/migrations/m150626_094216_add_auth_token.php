@@ -7,7 +7,7 @@ class m150626_094216_add_auth_token extends Migration
 {
     public function up()
     {
-        $this->addColumn('{{%user}}', 'auth_token', Schema::TYPE_STRING . ' NOT NULL');
+        $this->addColumn('{{%user}}', 'auth_token', Schema::TYPE_STRING);
         return true;
     }
 

@@ -20,15 +20,15 @@ class m150501_141431_firmware extends Migration
             'device_type_id' => Schema::TYPE_INTEGER,
             'odm_id' => Schema::TYPE_INTEGER,
             'chipset_id' => Schema::TYPE_INTEGER,
-            'fcc_number' => Schema::TYPE_STRING . ' NOT NULL',
-            'download_url' => Schema::TYPE_TEXT . ' NOT NULL',
-            'mac_address' => Schema::TYPE_STRING . ' NOT NULL',
+            'fcc_number' => Schema::TYPE_STRING,
+            'download_url' => Schema::TYPE_TEXT,
+            'mac_address' => Schema::TYPE_STRING,
             'image_upload_id' => Schema::TYPE_INTEGER,
-            'notes' => Schema::TYPE_TEXT . ' NOT NULL',
-            'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'created_by' => Schema::TYPE_STRING . ' NOT NULL',
-            'updated_by' => Schema::TYPE_STRING . ' NOT NULL',
+            'notes' => Schema::TYPE_TEXT,
+            'created_at' => Schema::TYPE_INTEGER,
+            'updated_at' => Schema::TYPE_INTEGER,
+            'created_by' => Schema::TYPE_STRING,
+            'updated_by' => Schema::TYPE_STRING,
         ], $tableOptions);
         $this->addForeignKey('fk_firmware_upload', 'firmware', 'upload_id', 'upload', 'id', 'SET NULL', 'NO ACTION');
         $this->addForeignKey('fk_firmware_manufacturer', 'firmware', 'manufacturer_id', 'manufacturer', 'id', 'SET NULL', 'NO ACTION');
