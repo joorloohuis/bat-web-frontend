@@ -119,7 +119,7 @@ class Job extends \yii\db\ActiveRecord
 
     public function canSchedule()
     {
-        return in_array($this->getCurrentStatus(), [JobStatus::INIT]);
+        return isset($this->scanner_id) &&in_array($this->getCurrentStatus(), [JobStatus::INIT]);
     }
 
     public function schedule()

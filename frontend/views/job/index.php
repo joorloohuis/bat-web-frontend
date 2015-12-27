@@ -36,7 +36,7 @@ if (Yii::$app->user->can('listResources')) {
             ],
             [
                 'attribute' => 'scanner',
-                'value' => function ($model, $index, $widget) { return $model->scanner && $model->scanner->name ? $model->scanner->name : ''; }
+                'value' => function ($model, $index, $widget) { return $model->scanner && $model->scanner->name ? $model->scanner->name : '(not set)'; }
             ],
             [
                 'attribute' => 'status',

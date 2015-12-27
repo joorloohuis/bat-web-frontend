@@ -45,7 +45,7 @@ $form = ActiveForm::begin([
         'pluginOptions' => ['highlight' => true],
         'dataset' => [
           'source' => [
-            'local' => $manufacturers,
+            'local' => count($manufacturers) ? $manufacturers : [''],
           ],
         ],
       ]) ?>
@@ -54,7 +54,7 @@ $form = ActiveForm::begin([
         'pluginOptions' => ['highlight' => true],
         'dataset' => [
           'source' => [
-            'local' => $manufacturers,
+            'local' => count($manufacturers) ? $manufacturers : [''],
           ],
         ],
       ]) ?>
