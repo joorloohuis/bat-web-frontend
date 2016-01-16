@@ -9,8 +9,12 @@ $params = array_merge(
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'gii'],
+    'bootstrap' => ['log'],
+    'enableCoreCommands' => false,
     'controllerNamespace' => 'console\controllers',
+    'controllerMap' => [
+        'migrate' => 'yii\console\controllers\MigrateController',
+    ],
     'modules' => [
         'gii' => 'yii\gii\Module',
         'rbac' => [
