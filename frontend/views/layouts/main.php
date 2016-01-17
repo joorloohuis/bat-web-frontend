@@ -204,7 +204,7 @@ AppAsset::register($this);
       </div>
 
       <footer class="main-footer">
-        <div class="pull-right hidden-xs">&copy; <?= date('Y') ?> <a href="http://www.tjaldur.nl/">Tjaldur Software Governance Solutions</a>.</div>&nbsp;
+        <div class="pull-right hidden-xs">&copy; <?= date('Y') ?> <a href="http://www.loohuis-consulting.nl/">Loco</a>.</div>&nbsp;
       </footer>
 
     <?php $this->endBody() ?>
