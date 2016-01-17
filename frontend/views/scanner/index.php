@@ -30,11 +30,11 @@ if (Yii::$app->user->can('listResources')) {
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            'id',
             'name',
             'description',
             [
-                'label' => 'Registered scanners',
+                'label' => 'Registered API users',
                 'value' => function ($model, $index, $widget) { return count(User::findAllByScannerId($model->id)); }
             ],
             [
